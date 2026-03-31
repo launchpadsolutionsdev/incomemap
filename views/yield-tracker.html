@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yield on Cost Tracker — incomemap</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="app-body">
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header"><a href="/dashboard" class="wordmark wordmark-light">incomemap</a></div>
+        <ul class="sidebar-nav">
+            <li><a href="/dashboard" class="sidebar-link"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Dashboard</span></a></li>
+            <li><a href="/holdings" class="sidebar-link"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><span>Holdings</span></a></li>
+            <li><a href="/dashboard/calendar" class="sidebar-link"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Calendar</span></a></li>
+            <li><a href="/projections" class="sidebar-link"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span>Projections</span></a></li>
+            <li><a href="/dashboard/yield-tracker" class="sidebar-link active"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span>Yield Tracker</span></a></li>
+        </ul>
+        <div class="sidebar-footer"><a href="/auth/logout" class="sidebar-link"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Sign out</span></a></div>
+    </nav>
+
+    <nav class="mobile-nav">
+        <a href="/dashboard" class="mobile-nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Dashboard</span></a>
+        <a href="/holdings" class="mobile-nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><span>Holdings</span></a>
+        <a href="/dashboard/calendar" class="mobile-nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Calendar</span></a>
+        <a href="/projections" class="mobile-nav-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg><span>Projections</span></a>
+        <a href="/dashboard/yield-tracker" class="mobile-nav-item active"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span>Yield</span></a>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Yield on Cost Tracker</h1>
+        </div>
+
+        <div class="account-pills" style="margin-bottom: 1.5rem;">
+            <button class="pill active" data-account="All">All</button>
+            <button class="pill" data-account="TFSA">TFSA</button>
+            <button class="pill" data-account="RRSP">RRSP</button>
+            <button class="pill" data-account="Non-Registered">Non-Reg</button>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Your Holdings — Current Yield vs. Yield on Cost</h2>
+            </div>
+            <p class="card-description">Yield on cost measures your dividend return based on what you actually paid. As companies raise dividends, your yield on cost increases — even if the stock price goes up.</p>
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Ticker</th>
+                            <th>Account</th>
+                            <th class="text-right">Avg. Cost</th>
+                            <th class="text-right">Price</th>
+                            <th class="text-right">Annual Div/Share</th>
+                            <th class="text-right">Current Yield</th>
+                            <th class="text-right">Yield on Cost</th>
+                            <th class="text-right">Annual Income</th>
+                        </tr>
+                    </thead>
+                    <tbody id="yieldBody">
+                        <tr><td colspan="8" class="empty-state">Loading yield data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer class="app-footer">
+        <p>IncomeMap is an informational tool and does not constitute financial advice. Dividend data may be delayed or inaccurate. Always verify with your brokerage.</p>
+    </footer>
+
+    <script src="/js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof initYieldTracker === 'function') initYieldTracker();
+        });
+    </script>
+</body>
+</html>
