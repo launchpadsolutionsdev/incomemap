@@ -2,10 +2,17 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const pool = require('../db/pool');
 
 function configurePassport(passport) {
+    if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+        console.warn('WARNING: Google OAuth credentials not set. Authentication will not work.');
+        passport.serializeUser((user, done) => done(null, user.id));
+        passport.deserializeUser(async (id, done) => done(null, null));
+        return;
+    }
+
     passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: `${process.env.BASE_URL}/auth/google/callback`
+        callbackURL: `${process.env.BASE_URL || 'http://localhost:3000'}/auth/google/callback`
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             const existing = await pool.query(

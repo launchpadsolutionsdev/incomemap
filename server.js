@@ -45,12 +45,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Sessions
+const sessionStore = new PgSession({
+    pool: pool,
+    tableName: 'session',
+    createTableIfMissing: true,
+    errorLog: (err) => console.error('Session store error:', err.message)
+});
+
 app.use(session({
-    store: new PgSession({
-        pool: pool,
-        tableName: 'session',
-        createTableIfMissing: true
-    }),
+    store: sessionStore,
     secret: process.env.SESSION_SECRET || 'dev-secret-change-me',
     resave: false,
     saveUninitialized: false,
