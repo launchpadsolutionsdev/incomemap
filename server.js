@@ -12,6 +12,9 @@ const pool = require('./db/pool');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust proxy (Render terminates SSL at its load balancer)
+app.set('trust proxy', 1);
+
 // Security
 app.use(helmet({
     contentSecurityPolicy: {
