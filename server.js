@@ -84,6 +84,14 @@ app.use('/holdings', require('./routes/holdings'));
 app.use('/projections', require('./routes/projections'));
 app.use('/api', require('./routes/api'));
 
+// Legal pages
+app.get('/privacy', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'privacy.html'));
+});
+app.get('/terms', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'terms.html'));
+});
+
 // Landing page
 app.get('/', (req, res) => {
     if (req.isAuthenticated()) {
