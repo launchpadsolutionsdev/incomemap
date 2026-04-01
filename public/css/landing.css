@@ -224,12 +224,12 @@
     width: 260px;
 }
 
-/* Positions — scattered across lower hero */
-.im-float-pos-bl { bottom: 140px; left: 5%; }
-.im-float-pos-ml { bottom: 40px; left: 12%; width: 220px; }
-.im-float-pos-mr { top: 52%; right: 4%; }
-.im-float-pos-br { bottom: 50px; right: 8%; width: 230px; }
-.im-float-pos-pill { bottom: 180px; right: 15%; }
+/* Positions — aligned to 1200px nav container */
+.im-float-pos-bl { bottom: 140px; left: calc(50% - 600px); }
+.im-float-pos-ml { bottom: 40px; left: calc(50% - 520px); width: 220px; }
+.im-float-pos-mr { top: 52%; right: calc(50% - 600px); }
+.im-float-pos-br { bottom: 50px; right: calc(50% - 560px); width: 230px; }
+.im-float-pos-pill { bottom: 180px; right: calc(50% - 480px); }
 
 /* Small pill element */
 .im-float-pill {
@@ -800,11 +800,11 @@
         transform: scale(0.85);
     }
 
-    .im-float-pos-bl { left: 2%; bottom: 100px; }
-    .im-float-pos-ml { left: 4%; bottom: 20px; }
-    .im-float-pos-mr { right: 2%; }
-    .im-float-pos-br { right: 3%; bottom: 30px; }
-    .im-float-pos-pill { right: 8%; bottom: 150px; }
+    .im-float-pos-bl { left: 24px; bottom: 100px; }
+    .im-float-pos-ml { left: 48px; bottom: 20px; }
+    .im-float-pos-mr { right: 24px; }
+    .im-float-pos-br { right: 32px; bottom: 30px; }
+    .im-float-pos-pill { right: 80px; bottom: 150px; }
 }
 
 @media (max-width: 768px) {
