@@ -10,6 +10,7 @@ router.get('/google/callback', (req, res, next) => {
     passport.authenticate('google', (err, user, info) => {
         if (err) {
             console.error('OAuth callback error:', err.message);
+            console.error('OAuth callback full error:', JSON.stringify(err, Object.getOwnPropertyNames(err)));
             return res.redirect('/?auth_error=callback_failed');
         }
         if (!user) {
