@@ -209,31 +209,45 @@
 }
 
 /* ========================================
-   Floating Dashboard Cards
+   Floating Dashboard Cards — Scattered
    ======================================== */
 
-.im-hero-float {
-    position: absolute;
-    bottom: 40px;
-    right: 48px;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    max-width: 280px;
-}
-
 .im-float-card {
+    position: absolute;
+    z-index: 2;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-radius: 14px;
-    padding: 20px;
+    padding: 18px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+    width: 260px;
 }
 
-.im-float-card-small {
-    padding: 16px;
+/* Positions — scattered across lower hero */
+.im-float-pos-bl { bottom: 140px; left: 5%; }
+.im-float-pos-ml { bottom: 40px; left: 12%; width: 220px; }
+.im-float-pos-mr { top: 52%; right: 4%; }
+.im-float-pos-br { bottom: 50px; right: 8%; width: 230px; }
+.im-float-pos-pill { bottom: 180px; right: 15%; }
+
+/* Small pill element */
+.im-float-pill {
+    position: absolute;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 50px;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1A3C2A;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .im-float-header {
@@ -335,6 +349,55 @@
     color: #B5AA9A;
     margin-top: 8px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.im-float-mini-bar {
+    height: 4px;
+    background: #E8E0D3;
+    border-radius: 2px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.im-float-mini-fill {
+    height: 100%;
+    background: #2D6B4F;
+    border-radius: 2px;
+}
+
+.im-float-yield-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.im-float-yield-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.im-float-yield-label {
+    font-size: 10px;
+    color: #B5AA9A;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.im-float-yield-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1A3C2A;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.im-float-yield-green {
+    color: #2D6B4F;
+}
+
+.im-float-yield-divider {
+    width: 1px;
+    height: 32px;
+    background: #E8E0D3;
 }
 
 /* ========================================
@@ -733,15 +796,15 @@
         max-width: 600px;
     }
 
-    .im-hero-float {
-        max-width: 240px;
-        right: 24px;
-        bottom: 24px;
+    .im-float-card {
+        transform: scale(0.85);
     }
 
-    .im-float-amount {
-        font-size: 22px;
-    }
+    .im-float-pos-bl { left: 2%; bottom: 100px; }
+    .im-float-pos-ml { left: 4%; bottom: 20px; }
+    .im-float-pos-mr { right: 2%; }
+    .im-float-pos-br { right: 3%; bottom: 30px; }
+    .im-float-pos-pill { right: 8%; bottom: 150px; }
 }
 
 @media (max-width: 768px) {
@@ -772,7 +835,8 @@
         font-size: 11px;
     }
 
-    .im-hero-float {
+    .im-float-card,
+    .im-float-pill {
         display: none;
     }
 
