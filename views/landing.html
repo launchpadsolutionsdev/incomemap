@@ -32,48 +32,95 @@
             </div>
         </div>
 
-        <!-- Floating dashboard card -->
-        <div class="im-hero-float anim-fade-up" style="animation-delay: 1.0s;">
-            <div class="im-float-card">
-                <div class="im-float-header">
-                    <span class="im-float-title">Monthly Income</span>
-                    <span class="im-float-badge">Live</span>
+        <!-- Floating UI cards — scattered like Superhuman -->
+
+        <!-- Bottom-left: Monthly income card -->
+        <div class="im-float-card im-float-pos-bl anim-fade-up" style="animation-delay: 0.9s;">
+            <div class="im-float-header">
+                <span class="im-float-title">Monthly Income</span>
+                <span class="im-float-badge">Live</span>
+            </div>
+            <div class="im-float-amount">$357.42</div>
+            <div class="im-float-change">+12.4% vs last month</div>
+            <div class="im-float-bars">
+                <div class="im-float-bar" style="height: 40%"></div>
+                <div class="im-float-bar" style="height: 55%"></div>
+                <div class="im-float-bar" style="height: 45%"></div>
+                <div class="im-float-bar" style="height: 60%"></div>
+                <div class="im-float-bar" style="height: 50%"></div>
+                <div class="im-float-bar" style="height: 72%"></div>
+                <div class="im-float-bar" style="height: 65%"></div>
+                <div class="im-float-bar" style="height: 78%"></div>
+                <div class="im-float-bar" style="height: 70%"></div>
+                <div class="im-float-bar" style="height: 85%"></div>
+                <div class="im-float-bar" style="height: 80%"></div>
+                <div class="im-float-bar im-float-bar-active" style="height: 92%"></div>
+            </div>
+            <div class="im-float-months">
+                <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+            </div>
+        </div>
+
+        <!-- Mid-left: DRIP projection snippet -->
+        <div class="im-float-card im-float-pos-ml anim-fade-up" style="animation-delay: 1.2s;">
+            <div class="im-float-header">
+                <span class="im-float-title">DRIP Projection</span>
+            </div>
+            <div class="im-float-row">
+                <span class="im-float-ticker">10 yr estimate</span>
+                <span class="im-float-row-amount">$12,840/yr</span>
+            </div>
+            <div class="im-float-row">
+                <span class="im-float-ticker">Current income</span>
+                <span class="im-float-row-amount">$4,287/yr</span>
+            </div>
+            <div class="im-float-mini-bar">
+                <div class="im-float-mini-fill" style="width: 33%"></div>
+            </div>
+        </div>
+
+        <!-- Right side: Upcoming payments -->
+        <div class="im-float-card im-float-pos-mr anim-fade-up" style="animation-delay: 1.0s;">
+            <div class="im-float-header">
+                <span class="im-float-title">Upcoming Payments</span>
+                <span class="im-float-badge">Next 7 days</span>
+            </div>
+            <div class="im-float-row">
+                <span class="im-float-ticker">VDY.TO</span>
+                <span class="im-float-row-amount">$42.50</span>
+            </div>
+            <div class="im-float-row">
+                <span class="im-float-ticker">XEI.TO</span>
+                <span class="im-float-row-amount">$28.80</span>
+            </div>
+            <div class="im-float-row">
+                <span class="im-float-ticker">ZRE.TO</span>
+                <span class="im-float-row-amount">$36.00</span>
+            </div>
+        </div>
+
+        <!-- Bottom-right: Yield pill -->
+        <div class="im-float-card im-float-pos-br anim-fade-up" style="animation-delay: 1.3s;">
+            <div class="im-float-header">
+                <span class="im-float-title">Portfolio Yield</span>
+            </div>
+            <div class="im-float-yield-row">
+                <div class="im-float-yield-item">
+                    <span class="im-float-yield-label">Current</span>
+                    <span class="im-float-yield-value">4.2%</span>
                 </div>
-                <div class="im-float-amount">$357.42</div>
-                <div class="im-float-change">+12.4% vs last month</div>
-                <div class="im-float-bars">
-                    <div class="im-float-bar" style="height: 40%"></div>
-                    <div class="im-float-bar" style="height: 55%"></div>
-                    <div class="im-float-bar" style="height: 45%"></div>
-                    <div class="im-float-bar" style="height: 60%"></div>
-                    <div class="im-float-bar" style="height: 50%"></div>
-                    <div class="im-float-bar" style="height: 72%"></div>
-                    <div class="im-float-bar" style="height: 65%"></div>
-                    <div class="im-float-bar" style="height: 78%"></div>
-                    <div class="im-float-bar" style="height: 70%"></div>
-                    <div class="im-float-bar" style="height: 85%"></div>
-                    <div class="im-float-bar" style="height: 80%"></div>
-                    <div class="im-float-bar im-float-bar-active" style="height: 92%"></div>
-                </div>
-                <div class="im-float-months">
-                    <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+                <div class="im-float-yield-divider"></div>
+                <div class="im-float-yield-item">
+                    <span class="im-float-yield-label">Yield on Cost</span>
+                    <span class="im-float-yield-value im-float-yield-green">5.8%</span>
                 </div>
             </div>
-            <div class="im-float-card im-float-card-small">
-                <div class="im-float-row">
-                    <span class="im-float-ticker">VDY.TO</span>
-                    <span class="im-float-row-amount">$42.50</span>
-                </div>
-                <div class="im-float-row">
-                    <span class="im-float-ticker">XEI.TO</span>
-                    <span class="im-float-row-amount">$28.80</span>
-                </div>
-                <div class="im-float-row">
-                    <span class="im-float-ticker">ZRE.TO</span>
-                    <span class="im-float-row-amount">$36.00</span>
-                </div>
-                <div class="im-float-label">Upcoming this week</div>
-            </div>
+        </div>
+
+        <!-- Mid-right: Account badge pill -->
+        <div class="im-float-pill im-float-pos-pill anim-fade-up" style="animation-delay: 1.4s;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2D6B4F" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            3 accounts synced
         </div>
     </section>
 
