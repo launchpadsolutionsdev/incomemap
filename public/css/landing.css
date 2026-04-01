@@ -240,6 +240,129 @@
 }
 
 /* ========================================
+   Numbers Strip
+   ======================================== */
+
+.im-numbers {
+    background: #F5F0E8;
+    padding: 36px 40px;
+}
+
+.im-numbers-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.im-number-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.im-number-value {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 24px;
+    font-weight: 600;
+    color: #2D6B4F;
+    line-height: 1.2;
+}
+
+.im-number-label {
+    font-size: 12px;
+    color: #8A7F72;
+    margin-top: 4px;
+}
+
+.im-number-divider {
+    width: 1px;
+    height: 36px;
+    background: #E8E0D3;
+}
+
+/* ========================================
+   How It Works
+   ======================================== */
+
+.im-how {
+    background: #FDFAF3;
+    padding: 60px 40px;
+}
+
+.im-how-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.im-how-header h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    color: #1A3C2A;
+    font-weight: 400;
+    margin-bottom: 8px;
+}
+
+.im-how-header p {
+    font-size: 14px;
+    color: #8A7F72;
+}
+
+.im-how-steps {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 20px;
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+.im-how-step {
+    flex: 1;
+    max-width: 220px;
+    text-align: center;
+}
+
+.im-how-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #1A3C2A;
+    color: #FDFAF3;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+}
+
+.im-how-step h3 {
+    font-size: 15px;
+    font-weight: 500;
+    color: #1A3C2A;
+    margin-bottom: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.im-how-step p {
+    font-size: 13px;
+    color: #8A7F72;
+    line-height: 1.5;
+}
+
+.im-how-arrow {
+    display: flex;
+    align-items: center;
+    padding-top: 8px;
+    flex-shrink: 0;
+}
+
+/* ========================================
    Features
    ======================================== */
 
@@ -360,33 +483,90 @@
    ======================================== */
 
 .im-footer {
-    padding: 32px 40px;
+    padding: 40px 40px 32px;
     background: #FDFAF3;
+    border-top: 0.5px solid #E8E0D3;
+}
+
+.im-footer-top {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
+    align-items: flex-start;
+    max-width: 720px;
+    margin: 0 auto 32px;
+}
+
+.im-footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .im-footer-logo {
     font-family: Georgia, 'Times New Roman', serif;
-    font-size: 16px;
+    font-size: 18px;
     color: #2D6B4F;
 }
 
-.im-footer-text {
+.im-footer-tagline {
+    font-size: 13px;
+    color: #8A7F72;
+}
+
+.im-footer-links {
+    display: flex;
+    gap: 48px;
+}
+
+.im-footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.im-footer-col h4 {
+    font-size: 12px;
+    font-weight: 600;
+    color: #5A5245;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.im-footer-col a {
+    font-size: 13px;
+    color: #8A7F72;
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.im-footer-col a:hover {
+    color: #2D6B4F;
+}
+
+.im-footer-bottom {
+    border-top: 0.5px solid #E8E0D3;
+    padding-top: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+}
+
+.im-footer-location {
     font-size: 12px;
     color: #8A7F72;
 }
 
 .im-footer-disclaimer {
-    width: 100%;
     font-size: 11px;
     color: #B5AA9A;
-    text-align: center;
-    margin-top: 8px;
     line-height: 1.6;
+    max-width: 560px;
 }
 
 /* ========================================
@@ -415,6 +595,41 @@
         margin-top: 30px;
     }
 
+    .im-numbers {
+        padding: 28px 20px;
+    }
+
+    .im-numbers-grid {
+        flex-wrap: wrap;
+        gap: 24px;
+    }
+
+    .im-number-divider {
+        display: none;
+    }
+
+    .im-number-item {
+        width: 40%;
+    }
+
+    .im-how {
+        padding: 40px 20px;
+    }
+
+    .im-how-steps {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .im-how-arrow {
+        transform: rotate(90deg);
+        padding: 0;
+    }
+
+    .im-how-step {
+        max-width: 300px;
+    }
+
     .im-features {
         padding: 40px 20px;
     }
@@ -434,9 +649,16 @@
     }
 
     .im-footer {
-        padding: 24px 20px;
+        padding: 32px 20px 24px;
+    }
+
+    .im-footer-top {
         flex-direction: column;
-        text-align: center;
+        gap: 24px;
+    }
+
+    .im-footer-links {
+        gap: 32px;
     }
 }
 
@@ -447,5 +669,9 @@
 
     .im-features-header h2 {
         font-size: 24px;
+    }
+
+    .im-number-value {
+        font-size: 20px;
     }
 }
