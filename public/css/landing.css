@@ -197,9 +197,9 @@
     gap: 10px;
     font-size: 15px;
     color: #5A5245;
-    background: transparent;
-    border: none;
-    padding: 14px 24px;
+    background: #FDFAF3;
+    border: 1px solid #E8E0D3;
+    padding: 13px 24px;
     border-radius: 8px;
     cursor: pointer;
     text-decoration: none;
@@ -209,7 +209,9 @@
 }
 
 .im-hero-cta-google:hover {
-    color: #2D6B4F;
+    border-color: #B5AA9A;
+    color: #1A3C2A;
+    background: #F5F0E8;
 }
 
 .im-hero-cta-google svg {
