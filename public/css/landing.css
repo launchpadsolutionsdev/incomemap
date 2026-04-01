@@ -494,48 +494,101 @@
 }
 
 /* ========================================
-   Numbers Strip
+   Showcase Section (Wealthsimple-style)
    ======================================== */
 
-.im-numbers {
-    background: #F5F0E8;
-    padding: 36px 40px;
+.im-showcase {
+    background: #FDFAF3;
+    padding: 80px 40px 0;
 }
 
-.im-numbers-grid {
+.im-showcase-inner {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 40px;
-    max-width: 800px;
+    gap: 60px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
-.im-number-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+.im-showcase-text {
+    flex: 0 0 40%;
+    max-width: 460px;
 }
 
-.im-number-value {
-    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-    font-size: 24px;
-    font-weight: 600;
-    color: #2D6B4F;
+.im-showcase-text h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 42px;
+    font-weight: 400;
+    color: #1A3C2A;
     line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
 }
 
-.im-number-label {
-    font-size: 12px;
-    color: #8A7F72;
-    margin-top: 4px;
+.im-showcase-text p {
+    font-size: 16px;
+    color: #5A5245;
+    line-height: 1.6;
+    margin-bottom: 32px;
 }
 
-.im-number-divider {
-    width: 1px;
-    height: 36px;
-    background: #E8E0D3;
+.im-showcase-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 40px;
+    background: #1A3C2A;
+    color: #FDFAF3;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    transition: background 0.15s;
+}
+
+.im-showcase-cta:hover {
+    background: #2D6B4F;
+    color: #FDFAF3;
+}
+
+.im-showcase-image {
+    flex: 1;
+    min-width: 0;
+}
+
+.im-showcase-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    display: block;
+}
+
+/* 3-column feature strip */
+.im-showcase-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    max-width: 1200px;
+    margin: 64px auto 0;
+    padding-bottom: 80px;
+}
+
+.im-showcase-feature {
+    border-top: 2px solid #E8E0D3;
+    padding-top: 20px;
+}
+
+.im-showcase-feature h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1A3C2A;
+    margin-bottom: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.im-showcase-feature p {
+    font-size: 14px;
+    color: #5A5245;
+    line-height: 1.6;
 }
 
 /* ========================================
@@ -888,21 +941,30 @@
         margin: 0 auto;
     }
 
-    .im-numbers {
-        padding: 28px 20px;
+    .im-showcase {
+        padding: 48px 20px 0;
     }
 
-    .im-numbers-grid {
-        flex-wrap: wrap;
+    .im-showcase-inner {
+        flex-direction: column;
+        gap: 32px;
+    }
+
+    .im-showcase-text {
+        flex: none;
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .im-showcase-text h2 {
+        font-size: 32px;
+    }
+
+    .im-showcase-features {
+        grid-template-columns: 1fr;
         gap: 24px;
-    }
-
-    .im-number-divider {
-        display: none;
-    }
-
-    .im-number-item {
-        width: 40%;
+        margin-top: 40px;
+        padding-bottom: 48px;
     }
 
     .im-how {
@@ -979,7 +1041,7 @@
         font-size: 24px;
     }
 
-    .im-number-value {
-        font-size: 20px;
+    .im-showcase-text h2 {
+        font-size: 28px;
     }
 }
