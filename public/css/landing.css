@@ -31,12 +31,52 @@
 }
 
 /* ========================================
+   Sticky Banner
+   ======================================== */
+
+.im-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 10px 24px;
+    background: #1A3C2A;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.85);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.im-banner-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #FFFFFF;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 13px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 5px 14px;
+    border-radius: 50px;
+    transition: background 0.15s;
+}
+
+.im-banner-cta:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: #FFFFFF;
+}
+
+/* ========================================
    Nav — Transparent overlay on hero
    ======================================== */
 
 .im-nav {
     position: absolute;
-    top: 0;
+    top: 40px;
     left: 0;
     right: 0;
     z-index: 10;
@@ -136,7 +176,7 @@
     z-index: 3;
     text-align: center;
     max-width: 760px;
-    padding: 150px 40px 0;
+    padding: 180px 40px 0;
 }
 
 .im-hero-eyebrow {
