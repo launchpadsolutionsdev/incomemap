@@ -31,24 +31,26 @@
 }
 
 /* ========================================
-   Nav
+   Nav — Transparent overlay on hero
    ======================================== */
 
 .im-nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px;
-    background: #FDFAF3;
-    max-width: 1280px;
-    margin: 0 auto;
-    width: 100%;
+    padding: 24px 48px;
+    background: transparent;
 }
 
 .im-logo {
     font-family: Georgia, 'Times New Roman', serif;
     font-size: 22px;
-    color: #2D6B4F;
+    color: #FFFFFF;
     text-decoration: none;
 }
 
@@ -60,113 +62,101 @@
 
 .im-nav-link {
     font-size: 13px;
-    color: #5A5245;
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
     transition: color 0.15s;
 }
 
 .im-nav-link:hover {
-    color: #2D6B4F;
+    color: #FFFFFF;
 }
 
 .im-nav-cta {
     font-size: 13px;
-    color: #FDFAF3;
-    background: #2D6B4F;
+    color: #1A3C2A;
+    background: #FFFFFF;
     border: none;
-    padding: 8px 20px;
+    padding: 10px 22px;
     border-radius: 6px;
     cursor: pointer;
     text-decoration: none;
-    transition: background 0.15s;
+    transition: all 0.15s;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
 }
 
 .im-nav-cta:hover {
-    background: #4A9E74;
-    color: #FDFAF3;
+    background: rgba(255, 255, 255, 0.9);
+    color: #1A3C2A;
 }
 
 /* ========================================
-   Hero — Two Column Layout (Lightspeed style)
+   Hero — Full-viewport background image (Superhuman-style)
    ======================================== */
 
 .im-hero {
-    background: #FDFAF3;
-    min-height: 90vh;
+    position: relative;
+    min-height: 100vh;
     display: flex;
     align-items: center;
-    padding: 40px 40px 60px;
+    justify-content: center;
+    background-image: url('/images/hero-desktop.jpg');
+    background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat;
     overflow: hidden;
 }
 
-.im-hero-inner {
-    display: flex;
-    align-items: flex-start;
-    gap: 60px;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+/* Gradient overlay — dark top for text legibility, transparent bottom to reveal family */
+.im-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(10, 20, 15, 0.78) 0%,
+        rgba(10, 20, 15, 0.65) 35%,
+        rgba(10, 20, 15, 0.35) 60%,
+        rgba(10, 20, 15, 0.10) 80%,
+        transparent 100%
+    );
+    z-index: 1;
 }
 
-/* Left column — text */
-.im-hero-text {
-    flex: 0 0 45%;
-    max-width: 520px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-top: 20px;
+/* Hero content — centered above overlay */
+.im-hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 720px;
+    padding: 120px 40px 80px;
 }
 
-.im-hero-label {
+.im-hero-eyebrow {
     font-size: 14px;
-    color: #2D6B4F;
-    margin-bottom: 20px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 24px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .im-hero-headline {
     font-family: Georgia, 'Times New Roman', serif;
-    font-size: 40px;
+    font-size: 48px;
     font-weight: 400;
-    color: #1A3C2A;
-    line-height: 1.25;
-    margin-bottom: 40px;
-    letter-spacing: -0.02em;
-}
-
-/* Hero inline stats */
-.im-hero-stats {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px 24px;
-    margin-bottom: 36px;
-}
-
-.im-hero-stat {
-    display: flex;
-    flex-direction: column;
-}
-
-.im-hero-stat-value {
-    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-    font-size: 20px;
-    font-weight: 600;
-    color: #2D6B4F;
+    color: #FFFFFF;
     line-height: 1.2;
-}
-
-.im-hero-stat-label {
-    font-size: 12px;
-    color: #8A7F72;
-    margin-top: 2px;
+    letter-spacing: -0.02em;
+    margin-bottom: 40px;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
 }
 
 .im-hero-buttons {
     display: flex;
     gap: 16px;
     align-items: center;
+    justify-content: center;
     flex-wrap: wrap;
 }
 
@@ -174,21 +164,22 @@
     display: inline-flex;
     align-items: center;
     font-size: 15px;
-    color: #FDFAF3;
-    background: #2D6B4F;
+    color: #1A3C2A;
+    background: #FFFFFF;
     border: none;
-    padding: 14px 28px;
+    padding: 14px 32px;
     border-radius: 8px;
     cursor: pointer;
     text-decoration: none;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    transition: background 0.15s;
-    font-weight: 500;
+    transition: all 0.15s;
+    font-weight: 600;
 }
 
 .im-hero-cta:hover {
-    background: #4A9E74;
-    color: #FDFAF3;
+    background: rgba(255, 255, 255, 0.9);
+    color: #1A3C2A;
+    transform: translateY(-1px);
 }
 
 .im-hero-cta-google {
@@ -196,9 +187,9 @@
     align-items: center;
     gap: 10px;
     font-size: 15px;
-    color: #5A5245;
-    background: #FDFAF3;
-    border: 1px solid #E8E0D3;
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     padding: 13px 24px;
     border-radius: 8px;
     cursor: pointer;
@@ -206,291 +197,18 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     transition: all 0.15s;
     font-weight: 500;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .im-hero-cta-google:hover {
-    border-color: #B5AA9A;
-    color: #1A3C2A;
-    background: #F5F0E8;
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #FFFFFF;
 }
 
 .im-hero-cta-google svg {
     flex-shrink: 0;
-}
-
-/* Right column — Dashboard Mock */
-.im-hero-mock {
-    flex: 1;
-    min-width: 0;
-}
-
-.im-mock-window {
-    background: #FDFAF3;
-    border: 0.5px solid #E8E0D3;
-    border-radius: 12px;
-    box-shadow:
-        0 4px 6px rgba(0, 0, 0, 0.02),
-        0 12px 28px rgba(0, 0, 0, 0.06),
-        0 24px 60px rgba(0, 0, 0, 0.04);
-    overflow: hidden;
-}
-
-/* Tab bar */
-.im-mock-tabs {
-    display: flex;
-    gap: 4px;
-    padding: 10px 16px;
-    background: #F5F0E8;
-    border-bottom: 0.5px solid #E8E0D3;
-}
-
-.im-mock-tab {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 11px;
-    color: #B5AA9A;
-    padding: 5px 12px;
-    border-radius: 6px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-}
-
-.im-mock-tab-active {
-    background: #FDFAF3;
-    color: #2D6B4F;
-    font-weight: 500;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-}
-
-.im-mock-body {
-    padding: 18px;
-}
-
-/* Dashboard header */
-.im-mock-dash-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 14px;
-}
-
-.im-mock-greeting-text {
-    font-family: Georgia, 'Times New Roman', serif;
-    font-size: 15px;
-    color: #1A3C2A;
-    margin-bottom: 2px;
-    font-weight: 400;
-}
-
-.im-mock-greeting-date {
-    font-size: 10px;
-    color: #B5AA9A;
-}
-
-.im-mock-live-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #28CA41;
-    margin-top: 4px;
-}
-
-/* Mock metrics */
-.im-mock-metrics {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 16px;
-}
-
-.im-mock-metric {
-    background: #F5F0E8;
-    border-radius: 8px;
-    padding: 10px 12px;
-    border: 0.5px solid #E8E0D3;
-}
-
-.im-mock-metric-label {
-    font-size: 9px;
-    color: #B5AA9A;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 4px;
-}
-
-.im-mock-metric-value {
-    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-    font-size: 15px;
-    font-weight: 600;
-    color: #1A3C2A;
-    line-height: 1.2;
-}
-
-.im-mock-cents {
-    font-size: 11px;
-    color: #6BAF8D;
-}
-
-.im-mock-ticker {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-weight: 600;
-}
-
-.im-mock-metric-change {
-    font-size: 10px;
-    margin-top: 2px;
-}
-
-.im-mock-metric-change.positive {
-    color: #4A9E74;
-}
-
-.im-mock-metric-sub {
-    font-size: 10px;
-    color: #B5AA9A;
-    margin-top: 2px;
-}
-
-/* Mock chart section */
-.im-mock-chart-section {
-    background: #F5F0E8;
-    border-radius: 8px;
-    padding: 14px;
-    border: 0.5px solid #E8E0D3;
-}
-
-.im-mock-chart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-}
-
-.im-mock-chart-title {
-    font-size: 11px;
-    color: #5A5245;
-    font-weight: 500;
-}
-
-.im-mock-chart-year {
-    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-    font-size: 11px;
-    color: #B5AA9A;
-}
-
-/* SVG shared styles */
-.im-chart-svg {
-    width: 100%;
-    height: auto;
-    overflow: visible;
-}
-
-.im-chart-label {
-    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-    font-size: 10px;
-    fill: #B5AA9A;
-    text-anchor: start;
-}
-
-.im-chart-grid {
-    stroke: #E8E0D3;
-    stroke-width: 0.5;
-}
-
-/* Line chart */
-.im-mock-line {
-    fill: none;
-    stroke: #2D6B4F;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-dasharray: 1200;
-    stroke-dashoffset: 1200;
-    animation: drawLine 2s ease-in-out forwards;
-    animation-delay: 1.0s;
-}
-
-/* Upcoming payments table */
-.im-mock-table-section {
-    margin-top: 12px;
-}
-
-.im-mock-table-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-}
-
-.im-mock-live-badge {
-    font-size: 9px;
-    color: #2D6B4F;
-    background: #D4E8DC;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-}
-
-.im-mock-table {
-    display: flex;
-    flex-direction: column;
-}
-
-.im-mock-row {
-    display: flex;
-    align-items: center;
-    padding: 7px 0;
-    border-bottom: 0.5px solid #F0EBE3;
-    font-size: 11px;
-}
-
-.im-mock-row:last-child {
-    border-bottom: none;
-}
-
-.im-mock-row-date {
-    width: 52px;
-    color: #B5AA9A;
-    font-size: 10px;
-}
-
-.im-mock-row-ticker {
-    width: 60px;
-    font-weight: 600;
-    color: #1A3C2A;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-}
-
-.im-mock-row-detail {
-    flex: 1;
-    color: #B5AA9A;
-    font-size: 10px;
-}
-
-.im-mock-row-amount {
-    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-    font-weight: 600;
-    color: #2D6B4F;
-    font-size: 11px;
-}
-
-.im-mock-badges {
-    display: flex;
-    gap: 6px;
-    margin-top: 10px;
-}
-
-.im-mock-badge {
-    font-size: 9px;
-    color: #8A7F72;
-    background: #F5F0E8;
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-}
-
-.im-mock-badge-accent {
-    color: #C4883A;
-    background: #FDF5EB;
 }
 
 /* ========================================
@@ -881,20 +599,12 @@
    ======================================== */
 
 @media (max-width: 1024px) {
-    .im-hero-inner {
-        gap: 40px;
-    }
-
     .im-hero-headline {
-        font-size: 34px;
+        font-size: 40px;
     }
 
-    .im-mock-metrics {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .im-mock-tabs {
-        flex-wrap: wrap;
+    .im-hero-content {
+        max-width: 600px;
     }
 }
 
@@ -903,42 +613,23 @@
         padding: 16px 20px;
     }
 
+    /* Swap to mobile (portrait) hero image */
     .im-hero {
-        padding: 40px 20px;
-        min-height: auto;
+        background-image: url('/images/hero-mobile.jpg');
+        background-position: center center;
+        min-height: 100vh;
     }
 
-    .im-hero-inner {
-        flex-direction: column;
-        gap: 40px;
-    }
-
-    .im-hero-text {
-        flex: none;
-        max-width: 100%;
-        text-align: center;
+    .im-hero-content {
+        padding: 100px 24px 60px;
     }
 
     .im-hero-headline {
-        font-size: 34px;
+        font-size: 32px;
     }
 
-    .im-hero-desc {
-        font-size: 15px;
-    }
-
-    .im-hero-buttons {
-        justify-content: center;
-    }
-
-    .im-hero-sub {
-        text-align: center;
-    }
-
-    .im-hero-mock {
-        width: 100%;
-        max-width: 500px;
-        margin: 0 auto;
+    .im-hero-eyebrow {
+        font-size: 12px;
     }
 
     .im-showcase {
@@ -1019,7 +710,8 @@
 
 @media (max-width: 480px) {
     .im-hero-headline {
-        font-size: 28px;
+        font-size: 26px;
+        margin-bottom: 32px;
     }
 
     .im-hero-buttons {
@@ -1028,13 +720,10 @@
     }
 
     .im-hero-cta,
-    .im-hero-cta-outline {
+    .im-hero-cta-google {
         width: 100%;
         text-align: center;
-    }
-
-    .im-mock-metrics {
-        grid-template-columns: repeat(2, 1fr);
+        justify-content: center;
     }
 
     .im-features-header h2 {
