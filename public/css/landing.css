@@ -85,13 +85,31 @@
 }
 
 /* ========================================
-   Hero
+   Hero — Two Column Layout
    ======================================== */
 
 .im-hero {
     background: #FDFAF3;
-    padding: 80px 40px 60px;
-    text-align: center;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    padding: 60px 40px;
+    overflow: hidden;
+}
+
+.im-hero-inner {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Left column — text */
+.im-hero-text {
+    flex: 0 0 45%;
+    max-width: 480px;
 }
 
 .im-hero-badge {
@@ -108,22 +126,26 @@
 
 .im-hero-headline {
     font-family: Georgia, 'Times New Roman', serif;
-    font-size: 44px;
+    font-size: 46px;
     font-weight: 400;
     color: #1A3C2A;
-    line-height: 1.2;
-    margin-bottom: 16px;
-    max-width: 520px;
-    margin-left: auto;
-    margin-right: auto;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
 }
 
 .im-hero-desc {
     font-size: 16px;
     color: #8A7F72;
-    line-height: 1.6;
-    max-width: 440px;
-    margin: 0 auto 32px;
+    line-height: 1.7;
+    margin-bottom: 32px;
+}
+
+.im-hero-buttons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .im-hero-cta {
@@ -132,7 +154,7 @@
     color: #FDFAF3;
     background: #2D6B4F;
     border: none;
-    padding: 14px 32px;
+    padding: 14px 28px;
     border-radius: 8px;
     cursor: pointer;
     text-decoration: none;
@@ -145,24 +167,174 @@
     color: #FDFAF3;
 }
 
+.im-hero-cta-outline {
+    display: inline-block;
+    font-size: 15px;
+    color: #5A5245;
+    background: transparent;
+    border: 1px solid #E8E0D3;
+    padding: 13px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    transition: all 0.15s;
+}
+
+.im-hero-cta-outline:hover {
+    border-color: #2D6B4F;
+    color: #2D6B4F;
+}
+
 .im-hero-sub {
     font-size: 12px;
     color: #B5AA9A;
-    margin-top: 12px;
+    margin-top: 16px;
 }
 
-/* ========================================
-   Animated Compounding Chart
-   ======================================== */
+/* Right column — Dashboard Mock */
+.im-hero-mock {
+    flex: 1;
+    min-width: 0;
+    perspective: 1000px;
+}
 
-.im-chart-wrap {
-    max-width: 560px;
-    margin: 40px auto 0;
-    padding: 24px;
-    background: #F5F0E8;
+.im-mock-window {
+    background: #FDFAF3;
+    border: 0.5px solid #E8E0D3;
     border-radius: 12px;
+    box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.02),
+        0 12px 28px rgba(0, 0, 0, 0.06),
+        0 24px 60px rgba(0, 0, 0, 0.04);
+    transform: rotateY(-3deg) rotateX(1deg);
+    transition: transform 0.4s ease;
+    overflow: hidden;
 }
 
+.im-mock-window:hover {
+    transform: rotateY(-1deg) rotateX(0.5deg);
+}
+
+.im-mock-titlebar {
+    display: flex;
+    gap: 6px;
+    padding: 10px 14px;
+    background: #F5F0E8;
+    border-bottom: 0.5px solid #E8E0D3;
+}
+
+.im-mock-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.im-mock-body {
+    padding: 20px;
+}
+
+/* Mock greeting */
+.im-mock-greeting {
+    margin-bottom: 16px;
+}
+
+.im-mock-greeting-text {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 16px;
+    color: #1A3C2A;
+    margin-bottom: 2px;
+}
+
+.im-mock-greeting-date {
+    font-size: 11px;
+    color: #B5AA9A;
+}
+
+/* Mock metrics */
+.im-mock-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.im-mock-metric {
+    background: #F5F0E8;
+    border-radius: 8px;
+    padding: 10px 12px;
+    border: 0.5px solid #E8E0D3;
+}
+
+.im-mock-metric-label {
+    font-size: 9px;
+    color: #B5AA9A;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+
+.im-mock-metric-value {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1A3C2A;
+    line-height: 1.2;
+}
+
+.im-mock-cents {
+    font-size: 11px;
+    color: #6BAF8D;
+}
+
+.im-mock-ticker {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+}
+
+.im-mock-metric-change {
+    font-size: 10px;
+    margin-top: 2px;
+}
+
+.im-mock-metric-change.positive {
+    color: #4A9E74;
+}
+
+.im-mock-metric-sub {
+    font-size: 10px;
+    color: #B5AA9A;
+    margin-top: 2px;
+}
+
+/* Mock chart section */
+.im-mock-chart-section {
+    background: #F5F0E8;
+    border-radius: 8px;
+    padding: 14px;
+    border: 0.5px solid #E8E0D3;
+}
+
+.im-mock-chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.im-mock-chart-title {
+    font-size: 11px;
+    color: #5A5245;
+    font-weight: 500;
+}
+
+.im-mock-chart-year {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 11px;
+    color: #B5AA9A;
+}
+
+/* SVG shared styles */
 .im-chart-svg {
     width: 100%;
     height: auto;
@@ -181,60 +353,33 @@
     stroke-width: 0.5;
 }
 
-.im-chart-fill {
+/* Bar chart bars */
+.im-mock-bar {
     fill: #D4E8DC;
-    opacity: 0.4;
-}
-
-.im-chart-line {
-    fill: none;
-    stroke: #2D6B4F;
-    stroke-width: 2.5;
-    stroke-linecap: round;
-    stroke-dasharray: 2000;
-    stroke-dashoffset: 2000;
-    animation: drawLine 2.5s ease-in-out forwards;
-    animation-delay: 1.2s;
-}
-
-/* Dots */
-.im-dot {
-    fill: #2D6B4F;
     opacity: 0;
-    animation: fadeIn 0.4s ease forwards;
+    animation: barGrow 0.4s ease forwards;
 }
 
-.im-dot-final {
-    r: 5;
-}
+.im-mock-bar:nth-child(5) { animation-delay: 1.0s; }
+.im-mock-bar:nth-child(6) { animation-delay: 1.1s; }
+.im-mock-bar:nth-child(7) { animation-delay: 1.2s; }
+.im-mock-bar:nth-child(8) { animation-delay: 1.3s; }
+.im-mock-bar:nth-child(9) { animation-delay: 1.4s; }
+.im-mock-bar:nth-child(10) { animation-delay: 1.5s; }
+.im-mock-bar:nth-child(11) { animation-delay: 1.6s; }
+.im-mock-bar:nth-child(12) { animation-delay: 1.7s; }
+.im-mock-bar:nth-child(13) { animation-delay: 1.8s; }
+.im-mock-bar:nth-child(14) { animation-delay: 1.9s; }
+.im-mock-bar:nth-child(15) { animation-delay: 2.0s; }
+.im-mock-bar:nth-child(16) { animation-delay: 2.1s; }
 
-/* Milestone labels */
-.im-milestone {
-    opacity: 0;
-}
-
-.im-milestone-amount {
-    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-    font-size: 13px;
-    font-weight: 500;
-    fill: #1A3C2A;
-    text-anchor: middle;
-}
-
-.im-milestone-final {
-    fill: #FDFAF3;
-}
-
-.im-milestone-year {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 10px;
-    fill: #B5AA9A;
-    text-anchor: middle;
-}
-
-.im-milestone-year-final {
+.im-mock-bar-active {
     fill: #2D6B4F;
-    font-weight: 600;
+}
+
+@keyframes barGrow {
+    from { opacity: 0; transform: scaleY(0.3); transform-origin: bottom; }
+    to { opacity: 1; transform: scaleY(1); transform-origin: bottom; }
 }
 
 /* ========================================
@@ -571,26 +716,69 @@
    Responsive
    ======================================== */
 
+@media (max-width: 1024px) {
+    .im-hero-inner {
+        gap: 40px;
+    }
+
+    .im-hero-headline {
+        font-size: 38px;
+    }
+
+    .im-mock-metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
     .im-nav {
         padding: 16px 20px;
     }
 
     .im-hero {
-        padding: 50px 20px 40px;
+        padding: 40px 20px;
+        min-height: auto;
+    }
+
+    .im-hero-inner {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .im-hero-text {
+        flex: none;
+        max-width: 100%;
+        text-align: center;
     }
 
     .im-hero-headline {
-        font-size: 32px;
+        font-size: 34px;
     }
 
     .im-hero-desc {
         font-size: 15px;
     }
 
-    .im-chart-wrap {
-        padding: 16px;
-        margin-top: 30px;
+    .im-hero-buttons {
+        justify-content: center;
+    }
+
+    .im-hero-sub {
+        text-align: center;
+    }
+
+    .im-hero-mock {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .im-mock-window {
+        transform: none;
+    }
+
+    .im-mock-window:hover {
+        transform: none;
     }
 
     .im-numbers {
@@ -663,6 +851,21 @@
 @media (max-width: 480px) {
     .im-hero-headline {
         font-size: 28px;
+    }
+
+    .im-hero-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .im-hero-cta,
+    .im-hero-cta-outline {
+        width: 100%;
+        text-align: center;
+    }
+
+    .im-mock-metrics {
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .im-features-header h2 {
