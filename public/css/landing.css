@@ -88,7 +88,7 @@
 }
 
 /* ========================================
-   Hero — Two Column Layout
+   Hero — Two Column Layout (Lightspeed style)
    ======================================== */
 
 .im-hero {
@@ -96,13 +96,13 @@
     min-height: 90vh;
     display: flex;
     align-items: center;
-    padding: 60px 40px;
+    padding: 40px 40px 60px;
     overflow: hidden;
 }
 
 .im-hero-inner {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 60px;
     width: 100%;
     max-width: 1200px;
@@ -112,47 +112,40 @@
 /* Left column — text */
 .im-hero-text {
     flex: 0 0 45%;
-    max-width: 480px;
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 20px;
 }
 
-.im-hero-badge {
-    display: inline-block;
-    font-size: 11px;
-    letter-spacing: 1.5px;
+.im-hero-label {
+    font-size: 14px;
     color: #2D6B4F;
-    background: #D4E8DC;
-    padding: 5px 14px;
-    border-radius: 20px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .im-hero-headline {
     font-family: Georgia, 'Times New Roman', serif;
-    font-size: 46px;
+    font-size: 40px;
     font-weight: 400;
     color: #1A3C2A;
-    line-height: 1.15;
-    margin-bottom: 20px;
+    line-height: 1.25;
+    margin-bottom: 40px;
     letter-spacing: -0.02em;
-}
-
-.im-hero-desc {
-    font-size: 16px;
-    color: #8A7F72;
-    line-height: 1.7;
-    margin-bottom: 32px;
 }
 
 .im-hero-buttons {
     display: flex;
-    gap: 12px;
+    gap: 16px;
     align-items: center;
     flex-wrap: wrap;
 }
 
 .im-hero-cta {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     font-size: 15px;
     color: #FDFAF3;
     background: #2D6B4F;
@@ -163,6 +156,7 @@
     text-decoration: none;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     transition: background 0.15s;
+    font-weight: 500;
 }
 
 .im-hero-cta:hover {
@@ -170,36 +164,35 @@
     color: #FDFAF3;
 }
 
-.im-hero-cta-outline {
-    display: inline-block;
+.im-hero-cta-google {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     font-size: 15px;
     color: #5A5245;
     background: transparent;
-    border: 1px solid #E8E0D3;
-    padding: 13px 28px;
+    border: none;
+    padding: 14px 24px;
     border-radius: 8px;
     cursor: pointer;
     text-decoration: none;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     transition: all 0.15s;
+    font-weight: 500;
 }
 
-.im-hero-cta-outline:hover {
-    border-color: #2D6B4F;
+.im-hero-cta-google:hover {
     color: #2D6B4F;
 }
 
-.im-hero-sub {
-    font-size: 12px;
-    color: #B5AA9A;
-    margin-top: 16px;
+.im-hero-cta-google svg {
+    flex-shrink: 0;
 }
 
 /* Right column — Dashboard Mock */
 .im-hero-mock {
     flex: 1;
     min-width: 0;
-    perspective: 1000px;
 }
 
 .im-mock-window {
@@ -210,48 +203,67 @@
         0 4px 6px rgba(0, 0, 0, 0.02),
         0 12px 28px rgba(0, 0, 0, 0.06),
         0 24px 60px rgba(0, 0, 0, 0.04);
-    transform: rotateY(-3deg) rotateX(1deg);
-    transition: transform 0.4s ease;
     overflow: hidden;
 }
 
-.im-mock-window:hover {
-    transform: rotateY(-1deg) rotateX(0.5deg);
-}
-
-.im-mock-titlebar {
+/* Tab bar */
+.im-mock-tabs {
     display: flex;
-    gap: 6px;
-    padding: 10px 14px;
+    gap: 4px;
+    padding: 10px 16px;
     background: #F5F0E8;
     border-bottom: 0.5px solid #E8E0D3;
 }
 
-.im-mock-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
+.im-mock-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: #B5AA9A;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.im-mock-tab-active {
+    background: #FDFAF3;
+    color: #2D6B4F;
+    font-weight: 500;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
 
 .im-mock-body {
-    padding: 20px;
+    padding: 18px;
 }
 
-/* Mock greeting */
-.im-mock-greeting {
-    margin-bottom: 16px;
+/* Dashboard header */
+.im-mock-dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
 }
 
 .im-mock-greeting-text {
     font-family: Georgia, 'Times New Roman', serif;
-    font-size: 16px;
+    font-size: 15px;
     color: #1A3C2A;
     margin-bottom: 2px;
+    font-weight: 400;
 }
 
 .im-mock-greeting-date {
-    font-size: 11px;
+    font-size: 10px;
     color: #B5AA9A;
+}
+
+.im-mock-live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #28CA41;
+    margin-top: 4px;
 }
 
 /* Mock metrics */
@@ -356,33 +368,100 @@
     stroke-width: 0.5;
 }
 
-/* Bar chart bars */
-.im-mock-bar {
-    fill: #D4E8DC;
-    opacity: 0;
-    animation: barGrow 0.4s ease forwards;
+/* Line chart */
+.im-mock-line {
+    fill: none;
+    stroke: #2D6B4F;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 1200;
+    stroke-dashoffset: 1200;
+    animation: drawLine 2s ease-in-out forwards;
+    animation-delay: 1.0s;
 }
 
-.im-mock-bar:nth-child(5) { animation-delay: 1.0s; }
-.im-mock-bar:nth-child(6) { animation-delay: 1.1s; }
-.im-mock-bar:nth-child(7) { animation-delay: 1.2s; }
-.im-mock-bar:nth-child(8) { animation-delay: 1.3s; }
-.im-mock-bar:nth-child(9) { animation-delay: 1.4s; }
-.im-mock-bar:nth-child(10) { animation-delay: 1.5s; }
-.im-mock-bar:nth-child(11) { animation-delay: 1.6s; }
-.im-mock-bar:nth-child(12) { animation-delay: 1.7s; }
-.im-mock-bar:nth-child(13) { animation-delay: 1.8s; }
-.im-mock-bar:nth-child(14) { animation-delay: 1.9s; }
-.im-mock-bar:nth-child(15) { animation-delay: 2.0s; }
-.im-mock-bar:nth-child(16) { animation-delay: 2.1s; }
-
-.im-mock-bar-active {
-    fill: #2D6B4F;
+/* Upcoming payments table */
+.im-mock-table-section {
+    margin-top: 12px;
 }
 
-@keyframes barGrow {
-    from { opacity: 0; transform: scaleY(0.3); transform-origin: bottom; }
-    to { opacity: 1; transform: scaleY(1); transform-origin: bottom; }
+.im-mock-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.im-mock-live-badge {
+    font-size: 9px;
+    color: #2D6B4F;
+    background: #D4E8DC;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.im-mock-table {
+    display: flex;
+    flex-direction: column;
+}
+
+.im-mock-row {
+    display: flex;
+    align-items: center;
+    padding: 7px 0;
+    border-bottom: 0.5px solid #F0EBE3;
+    font-size: 11px;
+}
+
+.im-mock-row:last-child {
+    border-bottom: none;
+}
+
+.im-mock-row-date {
+    width: 52px;
+    color: #B5AA9A;
+    font-size: 10px;
+}
+
+.im-mock-row-ticker {
+    width: 60px;
+    font-weight: 600;
+    color: #1A3C2A;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.im-mock-row-detail {
+    flex: 1;
+    color: #B5AA9A;
+    font-size: 10px;
+}
+
+.im-mock-row-amount {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    font-weight: 600;
+    color: #2D6B4F;
+    font-size: 11px;
+}
+
+.im-mock-badges {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.im-mock-badge {
+    font-size: 9px;
+    color: #8A7F72;
+    background: #F5F0E8;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.im-mock-badge-accent {
+    color: #C4883A;
+    background: #FDF5EB;
 }
 
 /* ========================================
@@ -725,11 +804,15 @@
     }
 
     .im-hero-headline {
-        font-size: 38px;
+        font-size: 34px;
     }
 
     .im-mock-metrics {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .im-mock-tabs {
+        flex-wrap: wrap;
     }
 }
 
@@ -774,14 +857,6 @@
         width: 100%;
         max-width: 500px;
         margin: 0 auto;
-    }
-
-    .im-mock-window {
-        transform: none;
-    }
-
-    .im-mock-window:hover {
-        transform: none;
     }
 
     .im-numbers {
