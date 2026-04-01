@@ -1,0 +1,451 @@
+/* ========================================
+   IncomeMap — Landing Page Styles
+   ======================================== */
+
+/* ========================================
+   Keyframes
+   ======================================== */
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes drawLine {
+    to { stroke-dashoffset: 0; }
+}
+
+.anim-fade-up {
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+}
+
+.anim-fade-in {
+    opacity: 0;
+    animation: fadeIn 0.6s ease forwards;
+}
+
+/* ========================================
+   Nav
+   ======================================== */
+
+.im-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: #FDFAF3;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.im-logo {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    color: #2D6B4F;
+    text-decoration: none;
+}
+
+.im-nav-links {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+}
+
+.im-nav-link {
+    font-size: 13px;
+    color: #5A5245;
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.im-nav-link:hover {
+    color: #2D6B4F;
+}
+
+.im-nav-cta {
+    font-size: 13px;
+    color: #FDFAF3;
+    background: #2D6B4F;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.im-nav-cta:hover {
+    background: #4A9E74;
+    color: #FDFAF3;
+}
+
+/* ========================================
+   Hero
+   ======================================== */
+
+.im-hero {
+    background: #FDFAF3;
+    padding: 80px 40px 60px;
+    text-align: center;
+}
+
+.im-hero-badge {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: #2D6B4F;
+    background: #D4E8DC;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.im-hero-headline {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 44px;
+    font-weight: 400;
+    color: #1A3C2A;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.im-hero-desc {
+    font-size: 16px;
+    color: #8A7F72;
+    line-height: 1.6;
+    max-width: 440px;
+    margin: 0 auto 32px;
+}
+
+.im-hero-cta {
+    display: inline-block;
+    font-size: 15px;
+    color: #FDFAF3;
+    background: #2D6B4F;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    transition: background 0.15s;
+}
+
+.im-hero-cta:hover {
+    background: #4A9E74;
+    color: #FDFAF3;
+}
+
+.im-hero-sub {
+    font-size: 12px;
+    color: #B5AA9A;
+    margin-top: 12px;
+}
+
+/* ========================================
+   Animated Compounding Chart
+   ======================================== */
+
+.im-chart-wrap {
+    max-width: 560px;
+    margin: 40px auto 0;
+    padding: 24px;
+    background: #F5F0E8;
+    border-radius: 12px;
+}
+
+.im-chart-svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+.im-chart-label {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 10px;
+    fill: #B5AA9A;
+    text-anchor: start;
+}
+
+.im-chart-grid {
+    stroke: #E8E0D3;
+    stroke-width: 0.5;
+}
+
+.im-chart-fill {
+    fill: #D4E8DC;
+    opacity: 0.4;
+}
+
+.im-chart-line {
+    fill: none;
+    stroke: #2D6B4F;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: drawLine 2.5s ease-in-out forwards;
+    animation-delay: 1.2s;
+}
+
+/* Dots */
+.im-dot {
+    fill: #2D6B4F;
+    opacity: 0;
+    animation: fadeIn 0.4s ease forwards;
+}
+
+.im-dot-final {
+    r: 5;
+}
+
+/* Milestone labels */
+.im-milestone {
+    opacity: 0;
+}
+
+.im-milestone-amount {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    fill: #1A3C2A;
+    text-anchor: middle;
+}
+
+.im-milestone-final {
+    fill: #FDFAF3;
+}
+
+.im-milestone-year {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 10px;
+    fill: #B5AA9A;
+    text-anchor: middle;
+}
+
+.im-milestone-year-final {
+    fill: #2D6B4F;
+    font-weight: 600;
+}
+
+/* ========================================
+   Features
+   ======================================== */
+
+.im-features {
+    background: #FDFAF3;
+    padding: 60px 40px;
+}
+
+.im-features-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.im-features-header h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    color: #1A3C2A;
+    font-weight: 400;
+    margin-bottom: 8px;
+}
+
+.im-features-header p {
+    font-size: 14px;
+    color: #8A7F72;
+}
+
+.im-features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.im-feature-card {
+    background: #F5F0E8;
+    border-radius: 10px;
+    padding: 24px;
+}
+
+.im-feature-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: #D4E8DC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+}
+
+.im-feature-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.im-feature-card h3 {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1A3C2A;
+    margin-bottom: 6px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.im-feature-card p {
+    font-size: 12px;
+    color: #8A7F72;
+    line-height: 1.5;
+}
+
+/* ========================================
+   Social / CTA Banner
+   ======================================== */
+
+.im-social {
+    background: #1A3C2A;
+    padding: 50px 40px;
+    text-align: center;
+    border-radius: 12px;
+    margin: 0 40px 40px;
+}
+
+.im-social h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 26px;
+    color: #F5F0E8;
+    font-weight: 400;
+    margin-bottom: 8px;
+}
+
+.im-social p {
+    font-size: 14px;
+    color: #6BAF8D;
+    margin-bottom: 24px;
+}
+
+.im-social-cta {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 8px;
+    border: none;
+    background: #C4883A;
+    color: #FDFAF3;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    text-decoration: none;
+    transition: background 0.15s;
+}
+
+.im-social-cta:hover {
+    background: #d49943;
+    color: #FDFAF3;
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+
+.im-footer {
+    padding: 32px 40px;
+    background: #FDFAF3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.im-footer-logo {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 16px;
+    color: #2D6B4F;
+}
+
+.im-footer-text {
+    font-size: 12px;
+    color: #8A7F72;
+}
+
+.im-footer-disclaimer {
+    width: 100%;
+    font-size: 11px;
+    color: #B5AA9A;
+    text-align: center;
+    margin-top: 8px;
+    line-height: 1.6;
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+
+@media (max-width: 768px) {
+    .im-nav {
+        padding: 16px 20px;
+    }
+
+    .im-hero {
+        padding: 50px 20px 40px;
+    }
+
+    .im-hero-headline {
+        font-size: 32px;
+    }
+
+    .im-hero-desc {
+        font-size: 15px;
+    }
+
+    .im-chart-wrap {
+        padding: 16px;
+        margin-top: 30px;
+    }
+
+    .im-features {
+        padding: 40px 20px;
+    }
+
+    .im-features-grid {
+        grid-template-columns: 1fr;
+        max-width: 360px;
+    }
+
+    .im-social {
+        margin: 0 20px 20px;
+        padding: 40px 20px;
+    }
+
+    .im-social h2 {
+        font-size: 22px;
+    }
+
+    .im-footer {
+        padding: 24px 20px;
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .im-hero-headline {
+        font-size: 28px;
+    }
+
+    .im-features-header h2 {
+        font-size: 24px;
+    }
+}

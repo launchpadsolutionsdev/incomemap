@@ -5,77 +5,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>incomemap — Map your path to financial freedom</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/landing.css">
 </head>
 <body class="landing-body">
-    <header class="landing-header">
-        <div class="landing-nav">
-            <a href="/" class="wordmark">incomemap</a>
-            <a href="/auth/google" class="btn btn-outline-light">Sign in</a>
+    <nav class="im-nav">
+        <a href="/" class="im-logo">incomemap</a>
+        <div class="im-nav-links">
+            <a class="im-nav-link" href="#features">Features</a>
+            <a href="/auth/google" class="im-nav-cta">Get started free</a>
         </div>
-    </header>
+    </nav>
 
-    <main class="landing-main">
-        <section class="hero">
-            <span class="badge">Built for Canadian dividend investors</span>
-            <h1>Map your path to<br>financial freedom</h1>
-            <p class="hero-subtitle">Track your dividend income across TFSA, RRSP, and non-registered accounts. See your projected income. Model where DRIP compounding takes you in 10, 20, 30 years.</p>
-            <a href="/auth/google" class="btn btn-cta btn-lg">Get started free</a>
-        </section>
+    <section class="im-hero">
+        <div class="im-hero-badge anim-fade-up" style="animation-delay: 0.3s;">BUILT FOR CANADIAN DIVIDEND INVESTORS</div>
+        <h1 class="im-hero-headline anim-fade-up" style="animation-delay: 0.5s;">Map your path to financial freedom</h1>
+        <p class="im-hero-desc anim-fade-up" style="animation-delay: 0.7s;">Track your dividend income, model DRIP compounding, and see where your portfolio is taking you. Built for TFSA, RRSP, and non-registered accounts.</p>
+        <a href="/auth/google" class="im-hero-cta anim-fade-up" style="animation-delay: 0.9s;">Start mapping your income</a>
+        <div class="im-hero-sub anim-fade-up" style="animation-delay: 1.0s;">Free to start. No credit card required.</div>
 
-        <section class="features">
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="10" y1="3" x2="10" y2="21"/></svg>
-                    </div>
-                    <h3>Dashboard at a glance</h3>
-                    <p>Annual income, portfolio value, weighted yield, and next payment — everything you need on one screen.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                    </div>
-                    <h3>DRIP projections</h3>
-                    <p>Model your dividend compounding over 5, 10, 20, or 30 years. See the power of reinvestment.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    </div>
-                    <h3>Dividend calendar</h3>
-                    <p>See exactly when your payments land, month by month. Never miss a dividend date.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    </div>
-                    <h3>Multi-account support</h3>
-                    <p>Track TFSA, RRSP, and non-registered accounts separately or view them all together.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                    </div>
-                    <h3>USD/CAD conversion</h3>
-                    <p>Automatic currency conversion for US-listed holdings using Bank of Canada daily rates.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                    </div>
-                    <h3>Yield on cost</h3>
-                    <p>Track how your effective yield grows over time as companies raise their dividends.</p>
-                </div>
+        <!-- Animated Compounding Chart -->
+        <div class="im-chart-wrap anim-fade-in" style="animation-delay: 1.1s;">
+            <svg class="im-chart-svg" viewBox="0 0 680 200" preserveAspectRatio="xMidYMid meet">
+                <!-- Y-axis labels -->
+                <text x="10" y="175" class="im-chart-label">$2K</text>
+                <text x="10" y="130" class="im-chart-label">$10K</text>
+                <text x="10" y="85" class="im-chart-label">$25K</text>
+                <text x="10" y="40" class="im-chart-label">$50K</text>
+
+                <!-- Grid lines -->
+                <line x1="50" y1="170" x2="640" y2="170" class="im-chart-grid"/>
+                <line x1="50" y1="125" x2="640" y2="125" class="im-chart-grid"/>
+                <line x1="50" y1="80" x2="640" y2="80" class="im-chart-grid"/>
+                <line x1="50" y1="35" x2="640" y2="35" class="im-chart-grid"/>
+
+                <!-- Fill area under curve -->
+                <path d="M60 170 C120 168, 180 164, 240 155 C300 142, 360 122, 420 100 C480 72, 540 48, 620 28 L620 180 L60 180 Z" class="im-chart-fill"/>
+
+                <!-- Compounding curve -->
+                <path d="M60 170 C120 168, 180 164, 240 155 C300 142, 360 122, 420 100 C480 72, 540 48, 620 28" class="im-chart-line"/>
+
+                <!-- Milestone 1: Year 3 -->
+                <circle cx="144" cy="166" r="4" class="im-dot" style="animation-delay: 2.0s;"/>
+                <g class="im-milestone anim-fade-in" style="animation-delay: 2.0s;">
+                    <rect x="114" y="140" width="60" height="22" rx="4" fill="#fff" stroke="#E8E0D3" stroke-width="0.5"/>
+                    <text x="144" y="155" class="im-milestone-amount">$3.2K</text>
+                    <text x="144" y="186" class="im-milestone-year">Year 3</text>
+                </g>
+
+                <!-- Milestone 2: Year 10 -->
+                <circle cx="300" cy="142" r="4" class="im-dot" style="animation-delay: 2.5s;"/>
+                <g class="im-milestone anim-fade-in" style="animation-delay: 2.5s;">
+                    <rect x="270" y="116" width="60" height="22" rx="4" fill="#fff" stroke="#E8E0D3" stroke-width="0.5"/>
+                    <text x="300" y="131" class="im-milestone-amount">$8.4K</text>
+                    <text x="300" y="160" class="im-milestone-year">Year 10</text>
+                </g>
+
+                <!-- Milestone 3: Year 20 -->
+                <circle cx="456" cy="88" r="4" class="im-dot" style="animation-delay: 3.0s;"/>
+                <g class="im-milestone anim-fade-in" style="animation-delay: 3.0s;">
+                    <rect x="426" y="62" width="60" height="22" rx="4" fill="#fff" stroke="#E8E0D3" stroke-width="0.5"/>
+                    <text x="456" y="77" class="im-milestone-amount">$22.1K</text>
+                    <text x="456" y="106" class="im-milestone-year">Year 20</text>
+                </g>
+
+                <!-- Milestone 4: Year 30 (final — green card) -->
+                <circle cx="620" cy="28" r="5" class="im-dot im-dot-final" style="animation-delay: 3.5s;"/>
+                <g class="im-milestone anim-fade-in" style="animation-delay: 3.5s;">
+                    <rect x="580" y="2" width="68" height="22" rx="4" fill="#2D6B4F"/>
+                    <text x="614" y="17" class="im-milestone-amount im-milestone-final">$48.7K</text>
+                    <text x="620" y="50" class="im-milestone-year im-milestone-year-final">Year 30</text>
+                </g>
+            </svg>
+        </div>
+    </section>
+
+    <section class="im-features" id="features">
+        <div class="im-features-header">
+            <h2>See the road ahead</h2>
+            <p>Everything you need to understand your dividend income trajectory.</p>
+        </div>
+        <div class="im-features-grid">
+            <div class="im-feature-card">
+                <div class="im-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2D6B4F" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg></div>
+                <h3>Income calendar</h3>
+                <p>See every dividend payment mapped across the year. Know exactly when your money arrives.</p>
             </div>
-        </section>
-    </main>
-
-    <footer class="landing-footer">
-        <div class="footer-content">
-            <p class="footer-brand"><span class="wordmark">incomemap</span></p>
-            <p class="footer-location">Built in Thunder Bay for Canadian investors.</p>
-            <p class="footer-disclaimer">IncomeMap is an informational tool and does not constitute financial advice. Dividend data may be delayed or inaccurate. Always verify with your brokerage.</p>
+            <div class="im-feature-card">
+                <div class="im-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2D6B4F" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg></div>
+                <h3>DRIP projections</h3>
+                <p>Model compounding over 5, 10, or 30 years. See the snowball effect of reinvested dividends.</p>
+            </div>
+            <div class="im-feature-card">
+                <div class="im-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2D6B4F" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+                <h3>Yield on cost</h3>
+                <p>Track how your effective yield grows as companies raise their dividends against your cost basis.</p>
+            </div>
+            <div class="im-feature-card">
+                <div class="im-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2D6B4F" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg></div>
+                <h3>Multi-account</h3>
+                <p>Track your TFSA, RRSP, and non-registered accounts separately with proper tax context.</p>
+            </div>
+            <div class="im-feature-card">
+                <div class="im-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2D6B4F" stroke-width="2"><path d="M2 20h20M5 20V10M9 20V4M13 20V14M17 20V8M21 20V12"/></svg></div>
+                <h3>Contribution modeler</h3>
+                <p>See how adding $500/month changes your income trajectory. Plan your path with clarity.</p>
+            </div>
+            <div class="im-feature-card">
+                <div class="im-feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2D6B4F" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4M12 16h0"/><path d="M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83"/></svg></div>
+                <h3>Currency aware</h3>
+                <p>Automatic USD/CAD conversion for US-listed holdings. See your true income in Canadian dollars.</p>
+            </div>
         </div>
+    </section>
+
+    <section class="im-social">
+        <h2>Your income story starts here</h2>
+        <p>Start tracking your dividends and see the road ahead.</p>
+        <a href="/auth/google" class="im-social-cta">Get started free</a>
+    </section>
+
+    <footer class="im-footer">
+        <span class="im-footer-logo">incomemap</span>
+        <span class="im-footer-text">Built in Thunder Bay for Canadian investors.</span>
+        <span class="im-footer-disclaimer">IncomeMap is an informational tool and does not constitute financial advice. Dividend data may be delayed or inaccurate. Always verify with your brokerage.</span>
     </footer>
 </body>
 </html>
