@@ -141,29 +141,39 @@ async function getBatchQuotes(tickers) {
         return result;
     }
 
-    // Step 3: Fetch missing/stale quotes from API in one batch call
-    try {
-        const { data } = await axios.get(`${STABLE_URL}/batch-quote`, {
-            params: { symbols: needsApiRefresh.join(','), apikey: API_KEY },
-            timeout: REQUEST_TIMEOUT
-        });
-        const quotes = Array.isArray(data) ? data : [];
-        for (const q of quotes) {
-            if (q && q.symbol && q.price) {
-                const quoteObj = { symbol: q.symbol, price: q.price, name: q.name };
-                quoteCache.set(q.symbol, { data: quoteObj, timestamp: Date.now() });
-                result[q.symbol] = quoteObj;
-                // Persist to DB for cross-restart survival
-                saveQuoteToDb(q.symbol, q.price, q.name, q.change, q.changesPercentage);
+    // Step 3: Fetch quotes one at a time with delays to stay under rate limits
+    // This is gentler than batch endpoint which may not be available on all plans
+    for (const ticker of needsApiRefresh) {
+        if (isRateLimited()) break; // Stop if we hit a limit mid-fetch
+
+        try {
+            const { data } = await axios.get(`${STABLE_URL}/quote`, {
+                params: { symbol: ticker, apikey: API_KEY },
+                timeout: REQUEST_TIMEOUT
+            });
+            const quotes = Array.isArray(data) ? data : [data];
+            if (quotes.length > 0 && quotes[0] && quotes[0].price) {
+                const q = quotes[0];
+                const quoteObj = { symbol: q.symbol || ticker, price: q.price, name: q.name };
+                quoteCache.set(ticker, { data: quoteObj, timestamp: Date.now() });
+                result[ticker] = quoteObj;
+                saveQuoteToDb(ticker, q.price, q.name, q.change, q.changesPercentage);
             }
+        } catch (err) {
+            if (err.response && err.response.status === 429) {
+                setRateLimited();
+                break; // Stop fetching more tickers
+            }
+            console.error(`FMP quote error for ${ticker}: ${err.message}`);
         }
-        console.log(`FMP batch quote: requested ${needsApiRefresh.length}, got ${quotes.length} results`);
-    } catch (err) {
-        if (err.response && err.response.status === 429) setRateLimited();
-        const status = err.response ? err.response.status : 'no response';
-        console.error(`FMP batch quote error (${status}): ${err.message}`);
-        // On error, we still return whatever cached data we have — stale > zeros
+
+        // Wait 2 seconds between requests to avoid rate limits
+        if (needsApiRefresh.indexOf(ticker) < needsApiRefresh.length - 1) {
+            await new Promise(r => setTimeout(r, 2000));
+        }
     }
+
+    console.log(`FMP quotes: fetched ${Object.keys(result).length}/${tickers.length} tickers`);
 
     return result;
 }
