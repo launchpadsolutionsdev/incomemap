@@ -168,7 +168,7 @@ async function loadDashboardData() {
                 } else if (status.fmpTest && !status.fmpTest.ok) {
                     showApiBanner(`Market data API error: ${status.fmpTest.error}${status.fmpTest.response ? ' — ' + status.fmpTest.response : ''}. Check that your FMP API key is valid and your plan supports the /quote and /stock_dividend endpoints.`);
                 } else {
-                    showApiBanner('Market data is temporarily unavailable. Prices and dividends will update automatically when the data provider responds.');
+                    showApiBanner('Market data is loading — please refresh in a few seconds. If this persists, your holdings may not be returning data from the market data provider.');
                 }
             } catch (e) { /* ignore */ }
         } else {
