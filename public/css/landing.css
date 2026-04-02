@@ -705,25 +705,28 @@
 
 .im-social {
     background: #1A3C2A;
-    padding: 50px 40px;
+    padding: 64px 40px;
     text-align: center;
     border-radius: 12px;
     max-width: 1200px;
     margin: 0 auto 40px;
+    box-sizing: border-box;
+    width: calc(100% - 80px);
 }
 
 .im-social h2 {
-    font-family: Georgia, 'Times New Roman', serif;
-    font-size: 26px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 36px;
     color: #F5F0E8;
-    font-weight: 400;
-    margin-bottom: 8px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
 }
 
 .im-social p {
-    font-size: 14px;
+    font-size: 16px;
     color: #6BAF8D;
-    margin-bottom: 24px;
+    margin-bottom: 28px;
 }
 
 .im-social-cta {
