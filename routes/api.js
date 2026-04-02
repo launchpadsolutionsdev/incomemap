@@ -4,6 +4,7 @@ const { ensureAuth } = require('../middleware/auth');
 const fmpService = require('../services/fmp');
 const forexService = require('../services/forex');
 const dividendService = require('../services/dividends');
+const newsService = require('../services/news');
 const pool = require('../db/pool');
 
 // Ticker search
@@ -110,6 +111,17 @@ router.get('/yield-tracker/data', ensureAuth, async (req, res) => {
     } catch (err) {
         console.error('Yield tracker error:', err.message);
         res.status(500).json({ error: 'Failed to load yield data' });
+    }
+});
+
+// Get news for user's portfolio tickers
+router.get('/news', ensureAuth, async (req, res) => {
+    try {
+        const articles = await newsService.getNewsForUser(req.user.id);
+        res.json(articles);
+    } catch (err) {
+        console.error('News API error:', err.message);
+        res.status(500).json({ error: 'Failed to load news' });
     }
 });
 

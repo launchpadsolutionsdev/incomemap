@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { ensureAuth } = require('../middleware/auth');
 const pool = require('../db/pool');
+const newsService = require('../services/news');
 const path = require('path');
 
 router.use(ensureAuth);
@@ -55,11 +56,18 @@ router.post('/', async (req, res) => {
             return res.status(403).json({ error: 'Portfolio not found' });
         }
 
+        const cleanedTicker = ticker.toUpperCase();
         const result = await pool.query(
             `INSERT INTO holdings (portfolio_id, ticker, exchange, shares, avg_cost, currency)
              VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-            [portfolio_id, ticker.toUpperCase(), exchange, parseFloat(shares), parseFloat(avg_cost), currency || 'CAD']
+            [portfolio_id, cleanedTicker, exchange, parseFloat(shares), parseFloat(avg_cost), currency || 'CAD']
         );
+
+        // Fetch news in the background — don't block the response
+        newsService.fetchNewsForTicker(cleanedTicker, exchange).catch(err =>
+            console.error('Background news fetch error:', err.message)
+        );
+
         res.status(201).json(result.rows[0]);
     } catch (err) {
         console.error('Holding create error:', err.message);

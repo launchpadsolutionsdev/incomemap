@@ -917,6 +917,78 @@ a {
 }
 
 /* ========================================
+   News Feed
+   ======================================== */
+
+.news-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.news-item {
+    padding: 0.875rem 0;
+    border-bottom: 0.5px solid var(--im-border);
+}
+
+.news-item:last-child {
+    border-bottom: none;
+}
+
+.news-item-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.375rem;
+}
+
+.news-ticker-badge {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    border-radius: 4px;
+    background: var(--im-green-50);
+    color: var(--im-primary);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.news-meta {
+    font-size: 0.75rem;
+    color: var(--im-text-muted);
+}
+
+.news-headline {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--im-text);
+    line-height: 1.5;
+    text-decoration: none;
+}
+
+.news-headline:hover {
+    color: var(--im-primary);
+}
+
+.news-attribution {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 0.5px solid var(--im-border);
+    font-size: 0.6875rem;
+    color: var(--im-cream-500);
+    text-align: center;
+}
+
+.news-attribution a {
+    color: var(--im-cream-500);
+    text-decoration: underline;
+}
+
+.news-attribution a:hover {
+    color: var(--im-primary);
+}
+
+/* ========================================
    Loading
    ======================================== */
 

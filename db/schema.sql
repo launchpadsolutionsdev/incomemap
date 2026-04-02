@@ -75,6 +75,22 @@ CREATE TABLE IF NOT EXISTS "session" (
 
 CREATE INDEX IF NOT EXISTS "IDX_session_expire" ON "session" ("expire");
 
+CREATE TABLE IF NOT EXISTS stock_news (
+    id SERIAL PRIMARY KEY,
+    ticker VARCHAR(20) NOT NULL,
+    headline TEXT NOT NULL,
+    summary TEXT,
+    source VARCHAR(255),
+    url TEXT NOT NULL,
+    image_url TEXT,
+    published_at TIMESTAMP NOT NULL,
+    fetched_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE(ticker, url)
+);
+
+CREATE INDEX IF NOT EXISTS idx_stock_news_ticker ON stock_news(ticker);
+CREATE INDEX IF NOT EXISTS idx_stock_news_published ON stock_news(published_at DESC);
+
 -- Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_portfolios_user_id ON portfolios(user_id);
 CREATE INDEX IF NOT EXISTS idx_holdings_portfolio_id ON holdings(portfolio_id);
