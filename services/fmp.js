@@ -23,8 +23,8 @@ function isRateLimited() {
 }
 
 function setRateLimited(seconds) {
-    rateLimitedUntil = Date.now() + (seconds || 60) * 1000;
-    console.warn(`FMP rate limited — pausing API calls for ${seconds || 60}s`);
+    rateLimitedUntil = Date.now() + (seconds || 30) * 1000;
+    console.warn(`FMP rate limited — pausing API calls for ${seconds || 30}s`);
 }
 
 function getFmpTicker(ticker, exchange) {
@@ -47,7 +47,7 @@ async function searchTicker(query) {
             currency: item.currency
         }));
     } catch (err) {
-        if (err.response && err.response.status === 429) setRateLimited(60);
+        if (err.response && err.response.status === 429) setRateLimited(30);
         console.error('FMP search error:', err.message);
         return [];
     }
@@ -86,7 +86,7 @@ async function getBatchQuotes(tickers) {
         }
         console.log(`FMP batch quote: requested ${missing.length}, got ${quotes.length} results`);
     } catch (err) {
-        if (err.response && err.response.status === 429) setRateLimited(60);
+        if (err.response && err.response.status === 429) setRateLimited(30);
         const status = err.response ? err.response.status : 'no response';
         console.error(`FMP batch quote error (${status}): ${err.message}`);
     }
@@ -117,7 +117,7 @@ async function getQuote(ticker) {
         console.warn(`FMP quote returned empty for ${ticker}`);
         return null;
     } catch (err) {
-        if (err.response && err.response.status === 429) setRateLimited(60);
+        if (err.response && err.response.status === 429) setRateLimited(30);
         const status = err.response ? err.response.status : 'no response';
         const body = err.response ? JSON.stringify(err.response.data).slice(0, 200) : '';
         console.error(`FMP quote error for ${ticker} (${status}): ${err.message} ${body}`);
@@ -199,7 +199,7 @@ async function getDividendData(ticker, exchange) {
             annual_dividend: annualDividend
         };
     } catch (err) {
-        if (err.response && err.response.status === 429) setRateLimited(60);
+        if (err.response && err.response.status === 429) setRateLimited(30);
         const status = err.response ? err.response.status : 'no response';
         const body = err.response ? JSON.stringify(err.response.data).slice(0, 200) : '';
         console.error(`FMP dividend error for ${ticker}/${exchange} (${status}): ${err.message} ${body}`);
@@ -249,7 +249,7 @@ function detectFrequency(dividends) {
 // Diagnostic: test API without making a live call if possible
 async function testConnection() {
     if (!API_KEY) return { ok: false, error: 'FMP_API_KEY not set' };
-    if (isRateLimited()) return { ok: false, error: 'Rate limited — waiting before retrying API calls' };
+    if (isRateLimited()) return { ok: false, rateLimited: true, error: 'Rate limit cooldown active — will retry shortly' };
 
     // If we have any cached quote, the API is working — no need to burn a request
     if (quoteCache.size > 0) {
@@ -272,7 +272,7 @@ async function testConnection() {
         }
         return { ok: false, error: 'API returned empty data', response: JSON.stringify(data).slice(0, 300) };
     } catch (err) {
-        if (err.response && err.response.status === 429) setRateLimited(60);
+        if (err.response && err.response.status === 429) setRateLimited(30);
         return {
             ok: false,
             error: err.message,
