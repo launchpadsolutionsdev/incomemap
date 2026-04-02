@@ -25,8 +25,12 @@ async function getHoldingsWithDividends(userId, accountType) {
 
     const usdCadRate = await forexService.getUsdCadRate();
 
-    // Enrich all holdings in parallel instead of sequentially
-    const enriched = await Promise.all(holdings.map(async (holding) => {
+    // Enrich holdings in small batches to avoid API rate limits
+    const BATCH_SIZE = 3;
+    const enriched = [];
+    for (let i = 0; i < holdings.length; i += BATCH_SIZE) {
+        const batch = holdings.slice(i, i + BATCH_SIZE);
+        const batchResults = await Promise.all(batch.map(async (holding) => {
         try {
             const fmpTicker = fmpService.getFmpTicker(holding.ticker, holding.exchange);
             const [quote, divData] = await Promise.all([
@@ -35,7 +39,9 @@ async function getHoldingsWithDividends(userId, accountType) {
             ]);
 
             const currentPrice = quote ? quote.price : 0;
-            const annualDiv = divData ? parseFloat(divData.annual_dividend) : 0;
+            const annualDiv = divData ? parseFloat(divData.annual_dividend) || 0 : 0;
+            if (!quote) console.warn(`No quote data for ${holding.ticker} (${fmpTicker})`);
+            if (!divData) console.warn(`No dividend data for ${holding.ticker}/${holding.exchange}`);
             const shares = parseFloat(holding.shares);
             const annualIncome = annualDiv * shares;
             const marketValue = currentPrice * shares;
@@ -79,6 +85,12 @@ async function getHoldingsWithDividends(userId, accountType) {
             };
         }
     }));
+        enriched.push(...batchResults);
+        // Small delay between batches to respect rate limits
+        if (i + BATCH_SIZE < holdings.length) {
+            await new Promise(r => setTimeout(r, 300));
+        }
+    }
 
     return enriched;
 }
