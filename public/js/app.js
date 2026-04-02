@@ -287,15 +287,24 @@ async function loadNews() {
             return;
         }
 
-        el.innerHTML = articles.map(a => `
-            <div class="news-item">
-                <div class="news-item-header">
-                    <span class="news-ticker-badge">${a.ticker}</span>
-                    <span class="news-meta">${a.source} &middot; ${timeAgo(a.published_at)}</span>
-                </div>
-                <a href="${a.url}" target="_blank" rel="noopener noreferrer" class="news-headline">${a.headline}</a>
-            </div>
-        `).join('');
+        el.className = 'news-scroll';
+        el.innerHTML = articles.map(a => {
+            const summary = a.summary ? a.summary.slice(0, 120) + (a.summary.length > 120 ? '…' : '') : '';
+            return `
+                <a href="${a.url}" target="_blank" rel="noopener noreferrer" class="news-card">
+                    <img class="news-card-img" src="${a.image_url}" alt="" loading="lazy" onerror="this.style.display='none'">
+                    <div class="news-card-body">
+                        <span class="news-card-ticker">${a.ticker}</span>
+                        <div class="news-card-headline">${a.headline}</div>
+                        ${summary ? `<div class="news-card-summary">${summary}</div>` : ''}
+                        <div class="news-card-meta">
+                            <span>${a.source}</span>
+                            <span>${timeAgo(a.published_at)}</span>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }).join('');
     } catch (err) {
         console.error('News load error:', err);
         el.innerHTML = '<p class="empty-state">Unable to load news at this time.</p>';
