@@ -134,6 +134,22 @@ function initDashboard() {
     loadNews();
 }
 
+function showApiBanner(msg) {
+    removeApiBanner();
+    const banner = document.createElement('div');
+    banner.id = 'apiBanner';
+    banner.className = 'api-banner';
+    banner.textContent = msg;
+    const main = document.querySelector('.main-content');
+    const header = document.querySelector('.page-header');
+    if (main && header) main.insertBefore(banner, header.nextSibling);
+}
+
+function removeApiBanner() {
+    const existing = document.getElementById('apiBanner');
+    if (existing) existing.remove();
+}
+
 async function loadDashboardData() {
     try {
         const data = await apiFetch('/api/dashboard/summary' + accountParam());
@@ -142,6 +158,20 @@ async function loadDashboardData() {
         document.getElementById('portfolioValue').textContent = fmtCurrency(data.portfolioValue);
         document.getElementById('holdingCount').textContent = `${data.holdingCount} holding${data.holdingCount !== 1 ? 's' : ''}`;
         document.getElementById('weightedYield').textContent = fmtPct(data.weightedYield);
+
+        // Show warning if holdings exist but all data is zero (API key likely missing)
+        if (data.holdingCount > 0 && data.annualIncome === 0 && data.portfolioValue === 0) {
+            try {
+                const status = await apiFetch('/api/status');
+                if (!status.fmpKeySet) {
+                    showApiBanner('Market data unavailable — the FMP_API_KEY environment variable is not configured. Add it in your hosting dashboard to see prices, dividends, and yields.');
+                } else {
+                    showApiBanner('Market data is temporarily unavailable. Prices and dividends will update automatically when the data provider responds.');
+                }
+            } catch (e) { /* ignore */ }
+        } else {
+            removeApiBanner();
+        }
 
         if (data.nextPayment) {
             document.getElementById('nextPaymentTicker').textContent = data.nextPayment.ticker;
