@@ -67,6 +67,10 @@ function ensureAuth(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
+    // Return JSON 401 for API/AJAX requests instead of redirecting
+    if (req.xhr || req.headers.accept === 'application/json' || req.method !== 'GET') {
+        return res.status(401).json({ error: 'Not authenticated' });
+    }
     res.redirect('/');
 }
 
