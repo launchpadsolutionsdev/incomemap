@@ -700,7 +700,8 @@
     padding: 50px 40px;
     text-align: center;
     border-radius: 12px;
-    margin: 0 40px 40px;
+    max-width: 1200px;
+    margin: 0 auto 40px;
 }
 
 .im-social h2 {
