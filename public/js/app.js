@@ -394,8 +394,8 @@ async function loadHoldings() {
                 <td class="text-right mono">${h.current_yield ? fmtPct(h.current_yield) : '—'}</td>
                 <td class="text-right mono">${fmtCurrency(h.annual_income_cad)}</td>
                 <td class="text-right">
-                    <button class="btn btn-ghost btn-sm" onclick="editHolding(${h.id}, ${parseFloat(h.shares)}, ${parseFloat(h.avg_cost)}, '${h.ticker}')">Edit</button>
-                    <button class="btn btn-ghost btn-sm btn-danger" onclick="deleteHolding(${h.id})">Delete</button>
+                    <button type="button" class="btn btn-ghost btn-sm" onclick="editHolding(${h.id}, ${parseFloat(h.shares)}, ${parseFloat(h.avg_cost)}, '${h.ticker}')">Edit</button>
+                    <button type="button" class="btn btn-ghost btn-sm btn-danger" onclick="deleteHolding(${h.id})">Delete</button>
                 </td>
             </tr>
         `).join('');
@@ -418,10 +418,22 @@ function editHolding(id, shares, avgCost, ticker) {
 async function deleteHolding(id) {
     if (!confirm('Delete this holding?')) return;
     try {
-        const res = await fetch(`/holdings/${id}`, { method: 'DELETE' });
-        if (!res.ok) {
-            const data = await res.json().catch(() => ({}));
-            alert(data.error || 'Failed to delete holding');
+        const res = await fetch(`/holdings/${id}`, {
+            method: 'DELETE',
+            headers: { 'Accept': 'application/json' }
+        });
+        if (res.redirected || !res.ok) {
+            if (res.status === 401 || res.redirected) {
+                alert('Session expired — please refresh the page and try again.');
+            } else {
+                const data = await res.json().catch(() => ({}));
+                alert(data.error || 'Failed to delete holding');
+            }
+            return;
+        }
+        const data = await res.json().catch(() => null);
+        if (!data || !data.success) {
+            alert('Failed to delete holding');
             return;
         }
         loadHoldings();
