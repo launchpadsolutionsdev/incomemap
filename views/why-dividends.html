@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Dividends — incomemap</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/landing.css">
+    <style>
+        .wd-hero {
+            background: #1A3C2A;
+            padding: 140px 40px 80px;
+            text-align: center;
+        }
+        .wd-hero-inner {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        .wd-hero h1 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 48px;
+            font-weight: 400;
+            color: #FFFFFF;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+        .wd-hero p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.6;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .wd-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 40px;
+        }
+
+        .wd-article {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+        }
+
+        .wd-intro {
+            max-width: 760px;
+            margin: 0 auto 80px;
+            text-align: center;
+        }
+        .wd-intro p {
+            font-size: 20px;
+            color: #5A5245;
+            line-height: 1.8;
+            font-family: Georgia, 'Times New Roman', serif;
+        }
+        .wd-intro p + p {
+            margin-top: 24px;
+        }
+        .wd-intro .wd-emphasis {
+            font-size: 22px;
+            color: #1A3C2A;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .wd-section {
+            margin-bottom: 32px;
+        }
+        .wd-section:last-child {
+            margin-bottom: 0;
+        }
+        .wd-section h2 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 28px;
+            font-weight: 400;
+            color: #1A3C2A;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+        .wd-section p {
+            font-size: 16px;
+            color: #5A5245;
+            line-height: 1.8;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        .wd-section p + p {
+            margin-top: 16px;
+        }
+
+        .wd-divider {
+            grid-column: 1 / -1;
+            height: 1px;
+            background: #E8E0D3;
+            margin: 32px 0;
+        }
+
+        .wd-cta-section {
+            background: #1A3C2A;
+            border-radius: 12px;
+            padding: 64px 40px;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            box-sizing: border-box;
+            width: calc(100% - 80px);
+        }
+        .wd-cta-section p {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 24px;
+            color: #F5F0E8;
+            font-weight: 400;
+            margin-bottom: 28px;
+            line-height: 1.4;
+        }
+        .wd-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            border-radius: 6px;
+            background: #C4883A;
+            color: #FDFAF3;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            transition: background 0.15s;
+        }
+        .wd-cta-btn:hover {
+            background: #d49943;
+            color: #FDFAF3;
+        }
+
+        @media (max-width: 768px) {
+            .wd-hero { padding: 100px 20px 60px; }
+            .wd-hero h1 { font-size: 32px; }
+            .wd-hero p { font-size: 16px; }
+            .wd-content { padding: 48px 20px; }
+            .wd-article { grid-template-columns: 1fr; gap: 0; }
+            .wd-intro p { font-size: 17px; }
+            .wd-intro .wd-emphasis { font-size: 19px; }
+            .wd-section h2 { font-size: 24px; }
+            .wd-cta-section { width: calc(100% - 40px); padding: 48px 24px; }
+            .wd-cta-section p { font-size: 20px; }
+            .wd-divider { margin: 16px 0; }
+        }
+    </style>
+</head>
+<body class="landing-body">
+    <div class="im-banner">
+        <span>Early access is open — be one of the first to map your dividend income for free</span>
+        <a href="/auth/google" class="im-banner-cta">Get started <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    </div>
+    <nav class="im-nav">
+        <div class="im-nav-inner">
+            <a href="/" class="im-logo" style="color: #FFFFFF;">incomemap</a>
+            <div class="im-nav-links">
+                <a class="im-nav-link" href="/#features">Features</a>
+                <a href="/auth/google" class="im-nav-cta">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="wd-hero">
+        <div class="wd-hero-inner">
+            <h1>Invest in the Life You Want</h1>
+            <p>The case for dividend investing — and why we built IncomeMap around it.</p>
+        </div>
+    </section>
+
+    <div class="wd-content">
+        <div class="wd-intro">
+            <p>There's a version of investing that dominates the headlines. It's fast. It's loud. It chases the next breakout stock, the next hot sector, the next thing that might 10x. And for some people, that works.</p>
+            <p class="wd-emphasis">This isn't about that.</p>
+            <p>Dividend investing is built on a quieter idea — that your portfolio should pay you, reliably, while you go about living your life. Not someday when you sell. Not if the market cooperates. Now, and next month, and the month after that.</p>
+            <p>It's an investing philosophy rooted in patience, compounding, and intention. And it's the philosophy IncomeMap was built to support.</p>
+        </div>
+
+        <div class="wd-article">
+            <div class="wd-section">
+                <h2>Your portfolio should work like a paycheque</h2>
+                <p>Most people think of investment returns as something you realize when you sell — buy low, sell high, and hope for the best in between. Dividend investing flips that model. Instead of waiting for an exit, you build a portfolio of companies that share their profits with you on a regular schedule.</p>
+                <p>Canadian banks. Utilities. Pipelines. REITs. These aren't flashy businesses, but they generate enormous cash flow, and they return a meaningful portion of it to shareholders every quarter — sometimes every month.</p>
+                <p>Over time, those payments start to resemble something familiar: income. Predictable, recurring income that shows up whether markets are up, down, or sideways. The kind of income you can plan a life around.</p>
+            </div>
+
+            <div class="wd-section">
+                <h2>The DRIP effect: compounding in action</h2>
+                <p>Dividend investing gets genuinely powerful when you reinvest. Every dividend payment buys more shares. Those new shares produce their own dividends. And those dividends buy more shares still.</p>
+                <p>This is the DRIP — the Dividend Reinvestment Plan — and inside a tax-sheltered account like a TFSA, it's one of the most effective wealth-building strategies available to Canadians. No capital gains tax. No dividend tax. Just pure, uninterrupted compounding.</p>
+                <p>The math is surprisingly dramatic. A portfolio yielding 5% with dividends reinvested doesn't just grow — it accelerates. Year over year, the gap between a DRIP portfolio and one that doesn't reinvest widens into something you can feel. Not in decades. In years.</p>
+            </div>
+
+            <div class="wd-divider"></div>
+
+            <div class="wd-section">
+                <h2>Volatility becomes noise</h2>
+                <p>One of the hardest parts of investing is staying invested. When markets drop 20%, the impulse to sell is visceral. Growth-focused portfolios offer nothing to hold onto in those moments — just red numbers and silence.</p>
+                <p>Dividend portfolios behave differently. When prices fall, your yield actually goes up. Your payments keep arriving. And if you're reinvesting, you're buying more shares at lower prices — which means your future income stream just got larger.</p>
+                <p>This doesn't make downturns painless. But it gives you something to focus on other than price. It turns volatility from a threat into an opportunity. And psychologically, that makes all the difference between panic-selling at the bottom and staying the course.</p>
+            </div>
+
+            <div class="wd-section">
+                <h2>Built for how Canadians actually invest</h2>
+                <p>Canada's market is uniquely well-suited to dividend investing. Our banks are oligopolies with decades of unbroken dividend growth. Our energy infrastructure throws off enormous cash flow. Our REITs offer monthly distributions. And our tax system — between the dividend tax credit in taxable accounts and the total tax shelter of TFSAs and RRSPs — rewards this approach in ways that few other countries match.</p>
+                <p>But most investing tools weren't built with this in mind. They track price. They show you total return. They treat dividends as a footnote.</p>
+                <p>IncomeMap is different. We built it specifically for investors who think in yield, who plan around payment dates, and who want to see what their portfolio will look like in 10, 20, or 30 years if they stay the course.</p>
+            </div>
+
+            <div class="wd-divider"></div>
+
+            <div class="wd-section" style="grid-column: 1 / -1; max-width: 760px; margin: 0 auto;">
+                <h2 style="text-align: center;">This isn't about getting rich fast</h2>
+                <p>Dividend investing won't make you a millionaire overnight. It won't give you a story to tell at a dinner party about the stock that tripled in a week. It's not exciting in the way that the market often rewards.</p>
+                <p>But it is reliable. It is measurable. And over a long enough timeline, it is remarkably powerful.</p>
+                <p>It's investing that lets you sleep at night. Investing that pays you while you wait. Investing that compounds quietly in the background while you focus on the things that actually matter to you — your family, your work, your life.</p>
+                <p>That's the philosophy behind IncomeMap. Not just tracking your portfolio, but understanding it. Not just watching numbers move, but seeing a plan unfold.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="wd-cta-section">
+        <p>Start mapping your dividend income today — it's free during early access.</p>
+        <a href="/auth/google" class="wd-cta-btn">
+            Get started free
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+    </div>
+
+    <footer class="im-footer">
+        <div class="im-footer-inner">
+            <div class="im-footer-brand">
+                <span class="im-footer-logo">incomemap</span>
+                <p class="im-footer-tagline">Map your path to financial freedom.</p>
+                <p class="im-footer-location">Built in Thunder Bay for Canadian investors.</p>
+                <p class="im-footer-disclaimer">IncomeMap is an informational tool and does not constitute financial advice. Dividend data may be delayed or inaccurate. Always verify with your brokerage.</p>
+            </div>
+            <div class="im-footer-col">
+                <h4>Product</h4>
+                <a href="/#features">Features</a>
+                <a href="/#how">How it works</a>
+                <a href="/auth/google">Get started</a>
+            </div>
+            <div class="im-footer-col">
+                <h4>Legal</h4>
+                <a href="/privacy">Privacy policy</a>
+                <a href="/terms">Terms of service</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
