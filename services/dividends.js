@@ -25,30 +25,28 @@ async function getHoldingsWithDividends(userId, accountType) {
 
     const usdCadRate = await forexService.getUsdCadRate();
 
-    // Enrich holdings in small batches to avoid API rate limits
-    const BATCH_SIZE = 3;
+    // Collect unique FMP tickers and fetch all quotes in ONE batch API call
+    const fmpTickers = [...new Set(holdings.map(h => fmpService.getFmpTicker(h.ticker, h.exchange)))];
+    const quotes = await fmpService.getBatchQuotes(fmpTickers);
+
+    // Fetch dividend data sequentially with delay to avoid rate limits
+    // Dividend data is cached for 7 days, so most calls will hit DB cache
     const enriched = [];
-    for (let i = 0; i < holdings.length; i += BATCH_SIZE) {
-        const batch = holdings.slice(i, i + BATCH_SIZE);
-        const batchResults = await Promise.all(batch.map(async (holding) => {
+    for (const holding of holdings) {
         try {
             const fmpTicker = fmpService.getFmpTicker(holding.ticker, holding.exchange);
-            const [quote, divData] = await Promise.all([
-                fmpService.getQuote(fmpTicker),
-                fmpService.getDividendData(holding.ticker, holding.exchange)
-            ]);
+            const quote = quotes[fmpTicker] || null;
+            const divData = await fmpService.getDividendData(holding.ticker, holding.exchange);
 
             const currentPrice = quote ? quote.price : 0;
             const annualDiv = divData ? parseFloat(divData.annual_dividend) || 0 : 0;
-            if (!quote) console.warn(`No quote data for ${holding.ticker} (${fmpTicker})`);
-            if (!divData) console.warn(`No dividend data for ${holding.ticker}/${holding.exchange}`);
             const shares = parseFloat(holding.shares);
             const annualIncome = annualDiv * shares;
             const marketValue = currentPrice * shares;
             const isUsd = holding.currency === 'USD';
             const cadMultiplier = isUsd ? usdCadRate : 1;
 
-            return {
+            enriched.push({
                 ...holding,
                 current_price: currentPrice,
                 market_value: marketValue,
@@ -62,13 +60,12 @@ async function getHoldingsWithDividends(userId, accountType) {
                 ex_date: divData ? divData.ex_date : null,
                 payment_date: divData ? divData.payment_date : null,
                 usd_cad_rate: isUsd ? usdCadRate : null
-            };
+            });
         } catch (err) {
             console.error(`Error enriching ${holding.ticker}:`, err.message);
-            // Return basic holding data even if enrichment fails
             const shares = parseFloat(holding.shares);
             const isUsd = holding.currency === 'USD';
-            return {
+            enriched.push({
                 ...holding,
                 current_price: 0,
                 market_value: 0,
@@ -82,13 +79,7 @@ async function getHoldingsWithDividends(userId, accountType) {
                 ex_date: null,
                 payment_date: null,
                 usd_cad_rate: isUsd ? usdCadRate : null
-            };
-        }
-    }));
-        enriched.push(...batchResults);
-        // Small delay between batches to respect rate limits
-        if (i + BATCH_SIZE < holdings.length) {
-            await new Promise(r => setTimeout(r, 300));
+            });
         }
     }
 
