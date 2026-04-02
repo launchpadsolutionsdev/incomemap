@@ -3,6 +3,11 @@ const pool = require('../db/pool');
 
 const BASE_URL = 'https://financialmodelingprep.com/api/v3';
 const API_KEY = process.env.FMP_API_KEY;
+const REQUEST_TIMEOUT = 8000; // 8 seconds
+
+if (!API_KEY) {
+    console.warn('WARNING: FMP_API_KEY not set — quote and dividend data will be unavailable');
+}
 
 // In-memory quote cache (short-lived)
 const quoteCache = new Map();
@@ -14,9 +19,11 @@ function getFmpTicker(ticker, exchange) {
 }
 
 async function searchTicker(query) {
+    if (!API_KEY) return [];
     try {
         const { data } = await axios.get(`${BASE_URL}/search`, {
-            params: { query, limit: 10, apikey: API_KEY }
+            params: { query, limit: 10, apikey: API_KEY },
+            timeout: REQUEST_TIMEOUT
         });
         return data.map(item => ({
             ticker: item.symbol,
@@ -37,9 +44,12 @@ async function getQuote(ticker) {
         return cached.data;
     }
 
+    if (!API_KEY) return null;
+
     try {
         const { data } = await axios.get(`${BASE_URL}/quote/${ticker}`, {
-            params: { apikey: API_KEY }
+            params: { apikey: API_KEY },
+            timeout: REQUEST_TIMEOUT
         });
         if (data && data.length > 0) {
             const quote = data[0];
@@ -70,14 +80,20 @@ async function getDividendData(ticker, exchange) {
         console.error('Dividend cache read error:', err.message);
     }
 
+    if (!API_KEY) {
+        // Fall back to stale cache if no API key
+        return getStaleDividendCache(ticker, exchange);
+    }
+
     // Fetch from FMP
     try {
         const { data } = await axios.get(`${BASE_URL}/historical-price-full/stock_dividend/${fmpTicker}`, {
-            params: { apikey: API_KEY }
+            params: { apikey: API_KEY },
+            timeout: REQUEST_TIMEOUT
         });
 
         if (!data || !data.historical || data.historical.length === 0) {
-            return null;
+            return getStaleDividendCache(ticker, exchange);
         }
 
         const dividends = data.historical;
@@ -101,15 +117,10 @@ async function getDividendData(ticker, exchange) {
             [ticker, exchange, latest.dividend, currentYield, frequency, latest.date, latest.paymentDate, annualDividend]
         );
 
-        // Store history
-        for (const div of dividends.slice(0, 20)) {
-            await pool.query(
-                `INSERT INTO dividend_history (ticker, exchange, amount, ex_date, payment_date, currency)
-                 VALUES ($1, $2, $3, $4, $5, $6)
-                 ON CONFLICT DO NOTHING`,
-                [ticker, exchange, div.dividend, div.date, div.paymentDate, exchange === 'TSX' ? 'CAD' : 'USD']
-            );
-        }
+        // Store history (fire and forget)
+        storeHistory(ticker, exchange, dividends).catch(err =>
+            console.error('Dividend history store error:', err.message)
+        );
 
         return {
             ticker, exchange,
@@ -122,16 +133,30 @@ async function getDividendData(ticker, exchange) {
         };
     } catch (err) {
         console.error('FMP dividend fetch error:', err.message);
-        // Fall back to any cached data, even if stale
-        try {
-            const stale = await pool.query(
-                'SELECT * FROM dividend_cache WHERE ticker = $1 AND exchange = $2',
-                [ticker, exchange]
-            );
-            return stale.rows[0] || null;
-        } catch (e) {
-            return null;
-        }
+        return getStaleDividendCache(ticker, exchange);
+    }
+}
+
+async function getStaleDividendCache(ticker, exchange) {
+    try {
+        const stale = await pool.query(
+            'SELECT * FROM dividend_cache WHERE ticker = $1 AND exchange = $2',
+            [ticker, exchange]
+        );
+        return stale.rows[0] || null;
+    } catch (e) {
+        return null;
+    }
+}
+
+async function storeHistory(ticker, exchange, dividends) {
+    for (const div of dividends.slice(0, 20)) {
+        await pool.query(
+            `INSERT INTO dividend_history (ticker, exchange, amount, ex_date, payment_date, currency)
+             VALUES ($1, $2, $3, $4, $5, $6)
+             ON CONFLICT DO NOTHING`,
+            [ticker, exchange, div.dividend, div.date, div.paymentDate, exchange === 'TSX' ? 'CAD' : 'USD']
+        );
     }
 }
 

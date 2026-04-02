@@ -21,38 +21,64 @@ async function getHoldingsForUser(userId, accountType) {
 
 async function getHoldingsWithDividends(userId, accountType) {
     const holdings = await getHoldingsForUser(userId, accountType);
+    if (holdings.length === 0) return [];
+
     const usdCadRate = await forexService.getUsdCadRate();
 
-    const enriched = [];
-    for (const holding of holdings) {
-        const fmpTicker = fmpService.getFmpTicker(holding.ticker, holding.exchange);
-        const quote = await fmpService.getQuote(fmpTicker);
-        const divData = await fmpService.getDividendData(holding.ticker, holding.exchange);
+    // Enrich all holdings in parallel instead of sequentially
+    const enriched = await Promise.all(holdings.map(async (holding) => {
+        try {
+            const fmpTicker = fmpService.getFmpTicker(holding.ticker, holding.exchange);
+            const [quote, divData] = await Promise.all([
+                fmpService.getQuote(fmpTicker),
+                fmpService.getDividendData(holding.ticker, holding.exchange)
+            ]);
 
-        const currentPrice = quote ? quote.price : 0;
-        const annualDiv = divData ? parseFloat(divData.annual_dividend) : 0;
-        const shares = parseFloat(holding.shares);
-        const annualIncome = annualDiv * shares;
-        const marketValue = currentPrice * shares;
-        const isUsd = holding.currency === 'USD';
-        const cadMultiplier = isUsd ? usdCadRate : 1;
+            const currentPrice = quote ? quote.price : 0;
+            const annualDiv = divData ? parseFloat(divData.annual_dividend) : 0;
+            const shares = parseFloat(holding.shares);
+            const annualIncome = annualDiv * shares;
+            const marketValue = currentPrice * shares;
+            const isUsd = holding.currency === 'USD';
+            const cadMultiplier = isUsd ? usdCadRate : 1;
 
-        enriched.push({
-            ...holding,
-            current_price: currentPrice,
-            market_value: marketValue,
-            market_value_cad: marketValue * cadMultiplier,
-            annual_dividend_per_share: annualDiv,
-            annual_income: annualIncome,
-            annual_income_cad: annualIncome * cadMultiplier,
-            current_yield: currentPrice > 0 ? (annualDiv / currentPrice) * 100 : 0,
-            yield_on_cost: parseFloat(holding.avg_cost) > 0 ? (annualDiv / parseFloat(holding.avg_cost)) * 100 : 0,
-            frequency: divData ? divData.frequency : 'Unknown',
-            ex_date: divData ? divData.ex_date : null,
-            payment_date: divData ? divData.payment_date : null,
-            usd_cad_rate: isUsd ? usdCadRate : null
-        });
-    }
+            return {
+                ...holding,
+                current_price: currentPrice,
+                market_value: marketValue,
+                market_value_cad: marketValue * cadMultiplier,
+                annual_dividend_per_share: annualDiv,
+                annual_income: annualIncome,
+                annual_income_cad: annualIncome * cadMultiplier,
+                current_yield: currentPrice > 0 ? (annualDiv / currentPrice) * 100 : 0,
+                yield_on_cost: parseFloat(holding.avg_cost) > 0 ? (annualDiv / parseFloat(holding.avg_cost)) * 100 : 0,
+                frequency: divData ? divData.frequency : 'Unknown',
+                ex_date: divData ? divData.ex_date : null,
+                payment_date: divData ? divData.payment_date : null,
+                usd_cad_rate: isUsd ? usdCadRate : null
+            };
+        } catch (err) {
+            console.error(`Error enriching ${holding.ticker}:`, err.message);
+            // Return basic holding data even if enrichment fails
+            const shares = parseFloat(holding.shares);
+            const isUsd = holding.currency === 'USD';
+            return {
+                ...holding,
+                current_price: 0,
+                market_value: 0,
+                market_value_cad: 0,
+                annual_dividend_per_share: 0,
+                annual_income: 0,
+                annual_income_cad: 0,
+                current_yield: 0,
+                yield_on_cost: 0,
+                frequency: 'Unknown',
+                ex_date: null,
+                payment_date: null,
+                usd_cad_rate: isUsd ? usdCadRate : null
+            };
+        }
+    }));
 
     return enriched;
 }
