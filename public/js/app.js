@@ -159,12 +159,14 @@ async function loadDashboardData() {
         document.getElementById('holdingCount').textContent = `${data.holdingCount} holding${data.holdingCount !== 1 ? 's' : ''}`;
         document.getElementById('weightedYield').textContent = fmtPct(data.weightedYield);
 
-        // Show warning if holdings exist but all data is zero (API key likely missing)
+        // Show warning if holdings exist but all data is zero (API issue)
         if (data.holdingCount > 0 && data.annualIncome === 0 && data.portfolioValue === 0) {
             try {
                 const status = await apiFetch('/api/status');
                 if (!status.fmpKeySet) {
                     showApiBanner('Market data unavailable — the FMP_API_KEY environment variable is not configured. Add it in your hosting dashboard to see prices, dividends, and yields.');
+                } else if (status.fmpTest && !status.fmpTest.ok) {
+                    showApiBanner(`Market data API error: ${status.fmpTest.error}${status.fmpTest.response ? ' — ' + status.fmpTest.response : ''}. Check that your FMP API key is valid and your plan supports the /quote and /stock_dividend endpoints.`);
                 } else {
                     showApiBanner('Market data is temporarily unavailable. Prices and dividends will update automatically when the data provider responds.');
                 }
