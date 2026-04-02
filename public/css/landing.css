@@ -544,79 +544,87 @@
 
 .im-how {
     background: #FDFAF3;
-    padding: 60px 40px;
+    padding: 80px 40px;
 }
 
-.im-how-header {
-    text-align: center;
-    margin-bottom: 48px;
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.im-how-header h2 {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 36px;
-    color: #1A3C2A;
-    font-weight: 700;
-    margin-bottom: 12px;
-    letter-spacing: -0.02em;
-}
-
-.im-how-header p {
-    font-size: 16px;
-    color: #8A7F72;
-}
-
-.im-how-steps {
+.im-how-inner {
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 24px;
+    align-items: center;
+    gap: 60px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-.im-how-step {
+.im-how-image {
+    flex: 0 0 45%;
+}
+
+.im-how-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    display: block;
+}
+
+.im-how-content {
     flex: 1;
-    text-align: center;
+}
+
+.im-how-content h2 {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 36px;
+    color: #1A3C2A;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+}
+
+.im-how-subtitle {
+    font-size: 16px;
+    color: #8A7F72;
+    margin-bottom: 36px;
+}
+
+.im-how-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.im-how-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
 }
 
 .im-how-number {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
     border-radius: 50%;
     background: #1A3C2A;
     color: #FDFAF3;
-    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 15px;
     font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 16px;
+    margin-top: 2px;
 }
 
 .im-how-step h3 {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 600;
     color: #1A3C2A;
-    margin-bottom: 10px;
+    margin-bottom: 4px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .im-how-step p {
-    font-size: 15px;
+    font-size: 14px;
     color: #8A7F72;
     line-height: 1.6;
-}
-
-.im-how-arrow {
-    display: flex;
-    align-items: center;
-    padding-top: 8px;
-    flex-shrink: 0;
 }
 
 /* ========================================
@@ -899,21 +907,21 @@
     }
 
     .im-how {
-        padding: 40px 20px;
+        padding: 48px 20px;
     }
 
-    .im-how-steps {
+    .im-how-inner {
         flex-direction: column;
-        align-items: center;
+        gap: 32px;
     }
 
-    .im-how-arrow {
-        transform: rotate(90deg);
-        padding: 0;
+    .im-how-image {
+        flex: none;
+        width: 100%;
     }
 
-    .im-how-step {
-        max-width: 300px;
+    .im-how-content h2 {
+        font-size: 28px;
     }
 
     .im-features {
