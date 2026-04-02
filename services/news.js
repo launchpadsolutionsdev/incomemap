@@ -53,16 +53,19 @@ async function fetchNewsForTicker(ticker, exchange) {
 // Get news for all tickers in a user's portfolio
 async function getNewsForUser(userId) {
     const result = await pool.query(
-        `SELECT DISTINCT sn.ticker, sn.headline, sn.summary, sn.source, sn.url, sn.image_url, sn.published_at
+        `SELECT DISTINCT ON (sn.url) sn.ticker, sn.headline, sn.summary, sn.source, sn.url, sn.image_url, sn.published_at
          FROM stock_news sn
          INNER JOIN holdings h ON sn.ticker = h.ticker
          INNER JOIN portfolios p ON h.portfolio_id = p.id
          WHERE p.user_id = $1
-         ORDER BY sn.published_at DESC
-         LIMIT 20`,
+           AND sn.image_url IS NOT NULL AND sn.image_url != ''
+         ORDER BY sn.url, sn.published_at DESC`,
         [userId]
     );
-    return result.rows;
+    // Sort by published_at desc after dedup, then limit to 5
+    return result.rows
+        .sort((a, b) => new Date(b.published_at) - new Date(a.published_at))
+        .slice(0, 5);
 }
 
 // Background job: refresh news for all active tickers across all users
