@@ -26,6 +26,67 @@ async function apiFetch(url) {
     return res.json();
 }
 
+// Confetti burst for new holdings
+function confettiBurst() {
+    const canvas = document.createElement('canvas');
+    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999';
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const colors = ['#4A9E74', '#2D6B4F', '#C4883A', '#D4E8DC', '#6BAF8D', '#d49943', '#1A3C2A'];
+    const particles = [];
+    const cx = canvas.width / 2;
+    const cy = canvas.height * 0.35;
+
+    for (let i = 0; i < 80; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 4 + Math.random() * 8;
+        particles.push({
+            x: cx, y: cy,
+            vx: Math.cos(angle) * speed * (0.6 + Math.random()),
+            vy: Math.sin(angle) * speed * (0.6 + Math.random()) - 3,
+            w: 4 + Math.random() * 6,
+            h: 4 + Math.random() * 4,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            rotation: Math.random() * 360,
+            rotSpeed: (Math.random() - 0.5) * 12,
+            alpha: 1
+        });
+    }
+
+    let frame = 0;
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let alive = false;
+        for (const p of particles) {
+            p.x += p.vx;
+            p.vy += 0.18;
+            p.y += p.vy;
+            p.vx *= 0.985;
+            p.rotation += p.rotSpeed;
+            if (frame > 40) p.alpha -= 0.025;
+            if (p.alpha <= 0) continue;
+            alive = true;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rotation * Math.PI / 180);
+            ctx.globalAlpha = Math.max(0, p.alpha);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            ctx.restore();
+        }
+        frame++;
+        if (alive && frame < 120) {
+            requestAnimationFrame(draw);
+        } else {
+            canvas.remove();
+        }
+    }
+    requestAnimationFrame(draw);
+}
+
 // Account filter pills — shared across pages
 let currentAccount = 'All';
 function setupAccountPills(onChange) {
@@ -366,6 +427,7 @@ function initHoldings() {
             }
             modal.style.display = 'none';
             loadHoldings();
+            if (!holdingId) confettiBurst();
         } catch (err) {
             console.error('Save error:', err);
         }
