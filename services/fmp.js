@@ -12,10 +12,11 @@ if (!API_KEY) {
 
 // In-memory caches
 const quoteCache = new Map();
-const QUOTE_CACHE_TTL = 2 * 60 * 60 * 1000; // 2 hours — prices change slowly for dividend investors
+const QUOTE_CACHE_TTL = 4 * 60 * 60 * 1000; // 4 hours in-memory
+const QUOTE_DB_REFRESH_HOURS = 6; // Only fetch new quotes from API every 6 hours
 const DIVIDEND_CACHE_DAYS = 7; // DB cache: refresh dividend data weekly
 
-// Track 429 rate limit state to avoid hammering the API
+// Track 429 rate limit state — long cooldown to prevent hammering
 let rateLimitedUntil = 0;
 
 function isRateLimited() {
@@ -23,8 +24,10 @@ function isRateLimited() {
 }
 
 function setRateLimited(seconds) {
-    rateLimitedUntil = Date.now() + (seconds || 30) * 1000;
-    console.warn(`FMP rate limited — pausing API calls for ${seconds || 30}s`);
+    // Use longer cooldown (5 min) to let the API limit fully reset
+    const duration = seconds || 300;
+    rateLimitedUntil = Date.now() + duration * 1000;
+    console.warn(`FMP rate limited — pausing API calls for ${duration}s`);
 }
 
 function getFmpTicker(ticker, exchange) {
@@ -47,48 +50,119 @@ async function searchTicker(query) {
             currency: item.currency
         }));
     } catch (err) {
-        if (err.response && err.response.status === 429) setRateLimited(30);
+        if (err.response && err.response.status === 429) setRateLimited();
         console.error('FMP search error:', err.message);
         return [];
     }
 }
 
-// Fetch quotes for multiple tickers in a single API call
-async function getBatchQuotes(tickers) {
-    if (!API_KEY || isRateLimited() || tickers.length === 0) return {};
+// Get a quote from DB cache
+async function getQuoteFromDb(ticker) {
+    try {
+        const result = await pool.query(
+            `SELECT * FROM quote_cache WHERE ticker = $1`,
+            [ticker]
+        );
+        return result.rows[0] || null;
+    } catch (err) {
+        return null;
+    }
+}
 
-    // Return cached quotes for tickers we already have, only fetch missing ones
+// Save quote to DB cache
+async function saveQuoteToDb(ticker, price, name, change, changePercent) {
+    try {
+        await pool.query(
+            `INSERT INTO quote_cache (ticker, price, name, change, change_percent, last_updated)
+             VALUES ($1, $2, $3, $4, $5, NOW())
+             ON CONFLICT (ticker) DO UPDATE SET
+             price = $2, name = $3, change = $4, change_percent = $5, last_updated = NOW()`,
+            [ticker, price, name || '', change || 0, changePercent || 0]
+        );
+    } catch (err) {
+        console.error('Quote DB save error:', err.message);
+    }
+}
+
+// Ensure quote_cache table exists
+async function ensureQuoteCacheTable() {
+    try {
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS quote_cache (
+                ticker VARCHAR(20) PRIMARY KEY,
+                price DECIMAL(12,4),
+                name VARCHAR(200),
+                change DECIMAL(12,4),
+                change_percent DECIMAL(8,4),
+                last_updated TIMESTAMP DEFAULT NOW()
+            )
+        `);
+    } catch (err) {
+        console.error('Failed to create quote_cache table:', err.message);
+    }
+}
+
+// Initialize on load
+ensureQuoteCacheTable();
+
+// Fetch quotes for multiple tickers — uses DB cache, only hits API if stale
+async function getBatchQuotes(tickers) {
+    if (!API_KEY || tickers.length === 0) return {};
+
     const result = {};
-    const missing = [];
+    const needsApiRefresh = [];
+
+    // Step 1: Check in-memory cache, then DB cache
     for (const t of tickers) {
-        const cached = quoteCache.get(t);
-        if (cached && Date.now() - cached.timestamp < QUOTE_CACHE_TTL) {
-            result[t] = cached.data;
+        const memCached = quoteCache.get(t);
+        if (memCached && Date.now() - memCached.timestamp < QUOTE_CACHE_TTL) {
+            result[t] = memCached.data;
+            continue;
+        }
+
+        const dbCached = await getQuoteFromDb(t);
+        if (dbCached) {
+            const quoteObj = { symbol: t, price: parseFloat(dbCached.price), name: dbCached.name };
+            quoteCache.set(t, { data: quoteObj, timestamp: Date.now() });
+            result[t] = quoteObj;
+
+            // Check if DB data is fresh enough (skip API refresh if so)
+            const ageHours = (Date.now() - new Date(dbCached.last_updated).getTime()) / (1000 * 60 * 60);
+            if (ageHours > QUOTE_DB_REFRESH_HOURS) {
+                needsApiRefresh.push(t);
+            }
         } else {
-            missing.push(t);
+            needsApiRefresh.push(t);
         }
     }
 
-    if (missing.length === 0) return result;
+    // Step 2: If rate limited, return whatever we have (stale > zeros)
+    if (isRateLimited() || needsApiRefresh.length === 0) {
+        return result;
+    }
 
+    // Step 3: Fetch missing/stale quotes from API in one batch call
     try {
-        // Stable batch endpoint: /stable/batch-quote?symbols=AAPL,MSFT
         const { data } = await axios.get(`${STABLE_URL}/batch-quote`, {
-            params: { symbols: missing.join(','), apikey: API_KEY },
+            params: { symbols: needsApiRefresh.join(','), apikey: API_KEY },
             timeout: REQUEST_TIMEOUT
         });
         const quotes = Array.isArray(data) ? data : [];
         for (const q of quotes) {
             if (q && q.symbol && q.price) {
-                quoteCache.set(q.symbol, { data: q, timestamp: Date.now() });
-                result[q.symbol] = q;
+                const quoteObj = { symbol: q.symbol, price: q.price, name: q.name };
+                quoteCache.set(q.symbol, { data: quoteObj, timestamp: Date.now() });
+                result[q.symbol] = quoteObj;
+                // Persist to DB for cross-restart survival
+                saveQuoteToDb(q.symbol, q.price, q.name, q.change, q.changesPercentage);
             }
         }
-        console.log(`FMP batch quote: requested ${missing.length}, got ${quotes.length} results`);
+        console.log(`FMP batch quote: requested ${needsApiRefresh.length}, got ${quotes.length} results`);
     } catch (err) {
-        if (err.response && err.response.status === 429) setRateLimited(30);
+        if (err.response && err.response.status === 429) setRateLimited();
         const status = err.response ? err.response.status : 'no response';
         console.error(`FMP batch quote error (${status}): ${err.message}`);
+        // On error, we still return whatever cached data we have — stale > zeros
     }
 
     return result;
@@ -99,6 +173,14 @@ async function getQuote(ticker) {
     const cached = quoteCache.get(ticker);
     if (cached && Date.now() - cached.timestamp < QUOTE_CACHE_TTL) {
         return cached.data;
+    }
+
+    // Check DB cache
+    const dbCached = await getQuoteFromDb(ticker);
+    if (dbCached) {
+        const quoteObj = { symbol: ticker, price: parseFloat(dbCached.price), name: dbCached.name };
+        quoteCache.set(ticker, { data: quoteObj, timestamp: Date.now() });
+        return quoteObj;
     }
 
     if (!API_KEY || isRateLimited()) return null;
@@ -112,12 +194,13 @@ async function getQuote(ticker) {
         if (results.length > 0 && results[0] && results[0].price) {
             const quote = results[0];
             quoteCache.set(ticker, { data: quote, timestamp: Date.now() });
+            saveQuoteToDb(ticker, quote.price, quote.name, quote.change, quote.changesPercentage);
             return quote;
         }
         console.warn(`FMP quote returned empty for ${ticker}`);
         return null;
     } catch (err) {
-        if (err.response && err.response.status === 429) setRateLimited(30);
+        if (err.response && err.response.status === 429) setRateLimited();
         const status = err.response ? err.response.status : 'no response';
         const body = err.response ? JSON.stringify(err.response.data).slice(0, 200) : '';
         console.error(`FMP quote error for ${ticker} (${status}): ${err.message} ${body}`);
@@ -153,19 +236,16 @@ async function getDividendData(ticker, exchange) {
             timeout: REQUEST_TIMEOUT
         });
 
-        // Stable API returns an array of dividend records
         const dividends = Array.isArray(data) ? data : [];
         if (dividends.length === 0) {
             return getStaleDividendCache(ticker, exchange);
         }
 
-        // Sort by date descending (newest first)
         dividends.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         const latest = dividends[0];
         const divAmount = latest.dividend || latest.adjDividend || 0;
 
-        // Calculate frequency and annual dividend
         const frequency = detectFrequency(dividends);
         const multiplier = { 'Monthly': 12, 'Quarterly': 4, 'Semi-Annual': 2, 'Annual': 1 }[frequency] || 4;
         const annualDividend = divAmount * multiplier;
@@ -175,7 +255,6 @@ async function getDividendData(ticker, exchange) {
         const price = cachedQuote ? cachedQuote.data.price : null;
         const currentYield = price ? annualDividend / price : null;
 
-        // Store in cache
         await pool.query(
             `INSERT INTO dividend_cache (ticker, exchange, dividend_amount, dividend_yield, frequency, ex_date, payment_date, annual_dividend, last_updated)
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
@@ -184,7 +263,6 @@ async function getDividendData(ticker, exchange) {
             [ticker, exchange, divAmount, currentYield, frequency, latest.date, latest.paymentDate, annualDividend]
         );
 
-        // Store history (fire and forget)
         storeHistory(ticker, exchange, dividends).catch(err =>
             console.error('Dividend history store error:', err.message)
         );
@@ -199,7 +277,7 @@ async function getDividendData(ticker, exchange) {
             annual_dividend: annualDividend
         };
     } catch (err) {
-        if (err.response && err.response.status === 429) setRateLimited(30);
+        if (err.response && err.response.status === 429) setRateLimited();
         const status = err.response ? err.response.status : 'no response';
         const body = err.response ? JSON.stringify(err.response.data).slice(0, 200) : '';
         console.error(`FMP dividend error for ${ticker}/${exchange} (${status}): ${err.message} ${body}`);
@@ -249,9 +327,12 @@ function detectFrequency(dividends) {
 // Diagnostic: test API without making a live call if possible
 async function testConnection() {
     if (!API_KEY) return { ok: false, error: 'FMP_API_KEY not set' };
-    if (isRateLimited()) return { ok: false, rateLimited: true, error: 'Rate limit cooldown active — will retry shortly' };
+    if (isRateLimited()) {
+        const secsLeft = Math.ceil((rateLimitedUntil - Date.now()) / 1000);
+        return { ok: false, rateLimited: true, secsLeft, error: `Rate limit cooldown — ${secsLeft}s remaining` };
+    }
 
-    // If we have any cached quote, the API is working — no need to burn a request
+    // If we have any cached quote, the API is working
     if (quoteCache.size > 0) {
         const first = quoteCache.values().next().value;
         if (first && Date.now() - first.timestamp < QUOTE_CACHE_TTL) {
@@ -259,7 +340,17 @@ async function testConnection() {
         }
     }
 
-    // Only make a live test call if we have no cached data at all
+    // Check DB for any recent quote before making a live call
+    try {
+        const dbQuote = await pool.query(
+            `SELECT * FROM quote_cache ORDER BY last_updated DESC LIMIT 1`
+        );
+        if (dbQuote.rows.length > 0) {
+            return { ok: true, sample: { ticker: dbQuote.rows[0].ticker, price: parseFloat(dbQuote.rows[0].price) }, cached: true };
+        }
+    } catch (e) { /* table might not exist yet */ }
+
+    // Only make a live test call as last resort
     try {
         const { data } = await axios.get(`${STABLE_URL}/quote`, {
             params: { symbol: 'AAPL', apikey: API_KEY },
@@ -268,11 +359,12 @@ async function testConnection() {
         const results = Array.isArray(data) ? data : [data];
         if (results.length > 0 && results[0] && results[0].price) {
             quoteCache.set('AAPL', { data: results[0], timestamp: Date.now() });
+            saveQuoteToDb('AAPL', results[0].price, results[0].name, results[0].change, results[0].changesPercentage);
             return { ok: true, sample: { ticker: 'AAPL', price: results[0].price } };
         }
         return { ok: false, error: 'API returned empty data', response: JSON.stringify(data).slice(0, 300) };
     } catch (err) {
-        if (err.response && err.response.status === 429) setRateLimited(30);
+        if (err.response && err.response.status === 429) setRateLimited();
         return {
             ok: false,
             error: err.message,

@@ -166,7 +166,9 @@ async function loadDashboardData() {
                 if (!status.fmpKeySet) {
                     showApiBanner('Market data unavailable — the FMP_API_KEY environment variable is not configured. Add it in your hosting dashboard to see prices, dividends, and yields.');
                 } else if (status.fmpTest && status.fmpTest.rateLimited) {
-                    showApiBanner('Market data is refreshing — rate limit cooldown active. Data will appear automatically in about 30 seconds. Please refresh the page shortly.');
+                    const secs = status.fmpTest.secsLeft || 60;
+                    showApiBanner(`Market data rate limit cooldown — retrying in ${secs}s. The page will auto-refresh.`);
+                    setTimeout(() => location.reload(), (secs + 5) * 1000);
                 } else if (status.fmpTest && !status.fmpTest.ok) {
                     showApiBanner(`Market data API error: ${status.fmpTest.error}${status.fmpTest.response ? ' — ' + status.fmpTest.response : ''}`);
                 } else {
