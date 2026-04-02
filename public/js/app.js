@@ -323,7 +323,7 @@ function initHoldings() {
         if (!btn) return;
         const id = parseInt(btn.dataset.id, 10);
         if (btn.dataset.action === 'delete') {
-            deleteHolding(id);
+            deleteHolding(id, btn.dataset.ticker);
         } else if (btn.dataset.action === 'edit') {
             editHolding(id, parseFloat(btn.dataset.shares), parseFloat(btn.dataset.avgcost), btn.dataset.ticker);
         }
@@ -407,7 +407,7 @@ async function loadHoldings() {
                 <td class="text-right mono">${fmtCurrency(h.annual_income_cad)}</td>
                 <td class="text-right">
                     <button type="button" class="btn btn-ghost btn-sm" data-action="edit" data-id="${h.id}" data-shares="${parseFloat(h.shares)}" data-avgcost="${parseFloat(h.avg_cost)}" data-ticker="${h.ticker}">Edit</button>
-                    <button type="button" class="btn btn-ghost btn-sm btn-danger" data-action="delete" data-id="${h.id}">Delete</button>
+                    <button type="button" class="btn btn-ghost btn-sm btn-danger" data-action="delete" data-id="${h.id}" data-ticker="${h.ticker}">Delete</button>
                 </td>
             </tr>
         `).join('');
@@ -427,32 +427,58 @@ function editHolding(id, shares, avgCost, ticker) {
     document.getElementById('holdingModal').style.display = 'flex';
 }
 
-async function deleteHolding(id) {
-    if (!confirm('Delete this holding?')) return;
-    try {
-        const res = await fetch(`/holdings/${id}`, {
-            method: 'DELETE',
-            headers: { 'Accept': 'application/json' }
-        });
-        if (res.redirected || !res.ok) {
-            if (res.status === 401 || res.redirected) {
-                alert('Session expired — please refresh the page and try again.');
-            } else {
-                const data = await res.json().catch(() => ({}));
-                alert(data.error || 'Failed to delete holding');
+function deleteHolding(id, ticker) {
+    const modal = document.getElementById('deleteModal');
+    const tickerEl = document.getElementById('deleteTicker');
+    const confirmBtn = document.getElementById('deleteConfirmBtn');
+    const cancelBtn = document.getElementById('deleteCancelBtn');
+
+    tickerEl.textContent = ticker || 'this holding';
+    modal.style.display = 'flex';
+
+    // Clean up any previous listeners by replacing buttons
+    const newConfirm = confirmBtn.cloneNode(true);
+    const newCancel = cancelBtn.cloneNode(true);
+    confirmBtn.parentNode.replaceChild(newConfirm, confirmBtn);
+    cancelBtn.parentNode.replaceChild(newCancel, cancelBtn);
+
+    newCancel.addEventListener('click', () => { modal.style.display = 'none'; });
+    modal.addEventListener('click', function handler(e) {
+        if (e.target === modal) { modal.style.display = 'none'; modal.removeEventListener('click', handler); }
+    });
+
+    newConfirm.addEventListener('click', async () => {
+        newConfirm.disabled = true;
+        newConfirm.textContent = 'Removing…';
+        try {
+            const res = await fetch(`/holdings/${id}`, {
+                method: 'DELETE',
+                headers: { 'Accept': 'application/json' }
+            });
+            if (res.redirected || !res.ok) {
+                if (res.status === 401 || res.redirected) {
+                    alert('Session expired — please refresh the page and try again.');
+                } else {
+                    const data = await res.json().catch(() => ({}));
+                    alert(data.error || 'Failed to delete holding');
+                }
+                return;
             }
-            return;
+            const data = await res.json().catch(() => null);
+            if (!data || !data.success) {
+                alert('Failed to delete holding');
+                return;
+            }
+            loadHoldings();
+        } catch (err) {
+            console.error('Delete error:', err);
+            alert('Network error — could not delete holding');
+        } finally {
+            modal.style.display = 'none';
+            newConfirm.disabled = false;
+            newConfirm.textContent = 'Remove';
         }
-        const data = await res.json().catch(() => null);
-        if (!data || !data.success) {
-            alert('Failed to delete holding');
-            return;
-        }
-        loadHoldings();
-    } catch (err) {
-        console.error('Delete error:', err);
-        alert('Network error — could not delete holding');
-    }
+    });
 }
 
 /* ========================================
