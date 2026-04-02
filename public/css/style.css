@@ -767,6 +767,7 @@ a {
     background: var(--im-bg);
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
 }
 
 /* Sidebar */

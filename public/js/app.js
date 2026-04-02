@@ -216,6 +216,7 @@ function initHoldings() {
         document.getElementById('modalTitle').textContent = 'Add Holding';
         document.getElementById('holdingId').value = '';
         form.reset();
+        tickerInput.disabled = false;
         modal.style.display = 'flex';
     });
 
@@ -369,10 +370,16 @@ function editHolding(id, shares, avgCost, ticker) {
 async function deleteHolding(id) {
     if (!confirm('Delete this holding?')) return;
     try {
-        await fetch(`/holdings/${id}`, { method: 'DELETE' });
+        const res = await fetch(`/holdings/${id}`, { method: 'DELETE' });
+        if (!res.ok) {
+            const data = await res.json().catch(() => ({}));
+            alert(data.error || 'Failed to delete holding');
+            return;
+        }
         loadHoldings();
     } catch (err) {
         console.error('Delete error:', err);
+        alert('Network error — could not delete holding');
     }
 }
 
