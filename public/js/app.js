@@ -165,10 +165,12 @@ async function loadDashboardData() {
                 const status = await apiFetch('/api/status');
                 if (!status.fmpKeySet) {
                     showApiBanner('Market data unavailable — the FMP_API_KEY environment variable is not configured. Add it in your hosting dashboard to see prices, dividends, and yields.');
+                } else if (status.fmpTest && status.fmpTest.rateLimited) {
+                    showApiBanner('Market data is refreshing — rate limit cooldown active. Data will appear automatically in about 30 seconds. Please refresh the page shortly.');
                 } else if (status.fmpTest && !status.fmpTest.ok) {
-                    showApiBanner(`Market data API error: ${status.fmpTest.error}${status.fmpTest.response ? ' — ' + status.fmpTest.response : ''}. Check that your FMP API key is valid and your plan supports the /quote and /stock_dividend endpoints.`);
+                    showApiBanner(`Market data API error: ${status.fmpTest.error}${status.fmpTest.response ? ' — ' + status.fmpTest.response : ''}`);
                 } else {
-                    showApiBanner('Market data is loading — please refresh in a few seconds. If this persists, your holdings may not be returning data from the market data provider.');
+                    showApiBanner('Market data is loading — please refresh in a few seconds.');
                 }
             } catch (e) { /* ignore */ }
         } else {
