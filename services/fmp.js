@@ -47,7 +47,8 @@ async function getQuote(ticker) {
     if (!API_KEY) return null;
 
     try {
-        const { data } = await axios.get(`${BASE_URL}/quote/${ticker}`, {
+        const url = `${BASE_URL}/quote/${ticker}`;
+        const { data } = await axios.get(url, {
             params: { apikey: API_KEY },
             timeout: REQUEST_TIMEOUT
         });
@@ -56,9 +57,17 @@ async function getQuote(ticker) {
             quoteCache.set(ticker, { data: quote, timestamp: Date.now() });
             return quote;
         }
+        // Log empty responses to help diagnose
+        if (data && typeof data === 'object' && data['Error Message']) {
+            console.error(`FMP quote error for ${ticker}: ${data['Error Message']}`);
+        } else {
+            console.warn(`FMP quote returned empty for ${ticker}`);
+        }
         return null;
     } catch (err) {
-        console.error('FMP quote error:', err.message);
+        const status = err.response ? err.response.status : 'no response';
+        const body = err.response ? JSON.stringify(err.response.data).slice(0, 200) : '';
+        console.error(`FMP quote error for ${ticker} (${status}): ${err.message} ${body}`);
         return null;
     }
 }
@@ -87,7 +96,8 @@ async function getDividendData(ticker, exchange) {
 
     // Fetch from FMP
     try {
-        const { data } = await axios.get(`${BASE_URL}/historical-price-full/stock_dividend/${fmpTicker}`, {
+        const divUrl = `${BASE_URL}/historical-price-full/stock_dividend/${fmpTicker}`;
+        const { data } = await axios.get(divUrl, {
             params: { apikey: API_KEY },
             timeout: REQUEST_TIMEOUT
         });
@@ -132,7 +142,9 @@ async function getDividendData(ticker, exchange) {
             annual_dividend: annualDividend
         };
     } catch (err) {
-        console.error('FMP dividend fetch error:', err.message);
+        const status = err.response ? err.response.status : 'no response';
+        const body = err.response ? JSON.stringify(err.response.data).slice(0, 200) : '';
+        console.error(`FMP dividend error for ${ticker}/${exchange} (${status}): ${err.message} ${body}`);
         return getStaleDividendCache(ticker, exchange);
     }
 }
@@ -175,4 +187,27 @@ function detectFrequency(dividends) {
     return 'Annual';
 }
 
-module.exports = { searchTicker, getQuote, getDividendData, getFmpTicker };
+// Diagnostic: test the API with a known ticker
+async function testConnection() {
+    if (!API_KEY) return { ok: false, error: 'FMP_API_KEY not set' };
+    try {
+        const { data, status } = await axios.get(`${BASE_URL}/quote/AAPL`, {
+            params: { apikey: API_KEY },
+            timeout: REQUEST_TIMEOUT
+        });
+        if (data && data.length > 0 && data[0].price) {
+            return { ok: true, sample: { ticker: 'AAPL', price: data[0].price } };
+        }
+        // API returned but no useful data — likely a plan/key issue
+        return { ok: false, error: 'API returned empty data', status, response: JSON.stringify(data).slice(0, 300) };
+    } catch (err) {
+        return {
+            ok: false,
+            error: err.message,
+            status: err.response ? err.response.status : null,
+            response: err.response ? JSON.stringify(err.response.data).slice(0, 300) : null
+        };
+    }
+}
+
+module.exports = { searchTicker, getQuote, getDividendData, getFmpTicker, testConnection };

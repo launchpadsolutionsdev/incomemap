@@ -125,10 +125,13 @@ router.get('/news', ensureAuth, async (req, res) => {
     }
 });
 
-// Diagnostic: check API key status
+// Diagnostic: check API key status and test connection
 router.get('/status', ensureAuth, async (req, res) => {
+    const fmpTest = await fmpService.testConnection();
     res.json({
         fmpKeySet: !!process.env.FMP_API_KEY,
+        fmpKeyPrefix: process.env.FMP_API_KEY ? process.env.FMP_API_KEY.slice(0, 6) + '...' : null,
+        fmpTest,
         finnhubKeySet: !!process.env.FINNHUB_API_KEY
     });
 });
