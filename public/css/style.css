@@ -917,6 +917,59 @@ a {
 }
 
 /* ========================================
+   Confirm Modal
+   ======================================== */
+
+.confirm-modal {
+    max-width: 380px;
+    text-align: center;
+    padding: 2rem 1.75rem 1.75rem;
+}
+
+.confirm-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: #fff5f5;
+    color: #c53030;
+    margin-bottom: 1rem;
+}
+
+.confirm-title {
+    font-size: 1.125rem;
+    color: var(--im-text);
+    margin-bottom: 0.5rem;
+}
+
+.confirm-body {
+    font-size: 0.875rem;
+    color: var(--im-text-muted);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.confirm-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.confirm-actions .btn {
+    flex: 1;
+}
+
+.btn-delete {
+    background: #c53030;
+    color: #fff;
+}
+
+.btn-delete:hover {
+    background: #9b2c2c;
+}
+
+/* ========================================
    News Feed
    ======================================== */
 
