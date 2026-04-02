@@ -125,4 +125,12 @@ router.get('/news', ensureAuth, async (req, res) => {
     }
 });
 
+// Diagnostic: check API key status
+router.get('/status', ensureAuth, async (req, res) => {
+    res.json({
+        fmpKeySet: !!process.env.FMP_API_KEY,
+        finnhubKeySet: !!process.env.FINNHUB_API_KEY
+    });
+});
+
 module.exports = router;
