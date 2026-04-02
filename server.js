@@ -106,6 +106,10 @@ app.get('/', (req, res) => {
 // Error handling
 app.use(require('./middleware/errors'));
 
+// Start background news refresh job
+const { startNewsRefreshJob } = require('./services/news');
+startNewsRefreshJob();
+
 app.listen(PORT, () => {
     console.log(`IncomeMap running on port ${PORT}`);
 });

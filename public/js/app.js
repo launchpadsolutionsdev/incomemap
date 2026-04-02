@@ -70,6 +70,7 @@ function initDashboard() {
 
     loadDashboardData();
     loadMonthlyChart(chartYear);
+    loadNews();
 }
 
 async function loadDashboardData() {
@@ -190,6 +191,53 @@ async function loadMonthlyChart(year) {
         });
     } catch (err) {
         console.error('Chart load error:', err);
+    }
+}
+
+/* ========================================
+   News Feed
+   ======================================== */
+
+function timeAgo(dateStr) {
+    const now = new Date();
+    const date = new Date(dateStr);
+    const seconds = Math.floor((now - date) / 1000);
+    if (seconds < 60) return 'just now';
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ago`;
+    const days = Math.floor(hours / 24);
+    if (days === 1) return '1 day ago';
+    if (days < 30) return `${days} days ago`;
+    const months = Math.floor(days / 30);
+    return months === 1 ? '1 month ago' : `${months} months ago`;
+}
+
+async function loadNews() {
+    const el = document.getElementById('newsFeed');
+    if (!el) return;
+
+    try {
+        const articles = await apiFetch('/api/news');
+
+        if (!articles || articles.length === 0) {
+            el.innerHTML = '<p class="empty-state">News will appear here as articles are published about your holdings.</p>';
+            return;
+        }
+
+        el.innerHTML = articles.map(a => `
+            <div class="news-item">
+                <div class="news-item-header">
+                    <span class="news-ticker-badge">${a.ticker}</span>
+                    <span class="news-meta">${a.source} &middot; ${timeAgo(a.published_at)}</span>
+                </div>
+                <a href="${a.url}" target="_blank" rel="noopener noreferrer" class="news-headline">${a.headline}</a>
+            </div>
+        `).join('');
+    } catch (err) {
+        console.error('News load error:', err);
+        el.innerHTML = '<p class="empty-state">Unable to load news at this time.</p>';
     }
 }
 
