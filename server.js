@@ -94,6 +94,9 @@ app.get('/privacy', (req, res) => {
 app.get('/terms', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'terms.html'));
 });
+app.get('/why-dividends', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'why-dividends.html'));
+});
 
 // Landing page
 app.get('/', (req, res) => {
