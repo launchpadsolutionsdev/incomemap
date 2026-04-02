@@ -317,6 +317,18 @@ function initHoldings() {
         if (!e.target.closest('.search-wrap')) searchResults.style.display = 'none';
     });
 
+    // Event delegation for Edit / Delete buttons in the holdings table
+    document.getElementById('holdingsBody').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action]');
+        if (!btn) return;
+        const id = parseInt(btn.dataset.id, 10);
+        if (btn.dataset.action === 'delete') {
+            deleteHolding(id);
+        } else if (btn.dataset.action === 'edit') {
+            editHolding(id, parseFloat(btn.dataset.shares), parseFloat(btn.dataset.avgcost), btn.dataset.ticker);
+        }
+    });
+
     // Form submit
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -394,8 +406,8 @@ async function loadHoldings() {
                 <td class="text-right mono">${h.current_yield ? fmtPct(h.current_yield) : '—'}</td>
                 <td class="text-right mono">${fmtCurrency(h.annual_income_cad)}</td>
                 <td class="text-right">
-                    <button type="button" class="btn btn-ghost btn-sm" onclick="editHolding(${h.id}, ${parseFloat(h.shares)}, ${parseFloat(h.avg_cost)}, '${h.ticker}')">Edit</button>
-                    <button type="button" class="btn btn-ghost btn-sm btn-danger" onclick="deleteHolding(${h.id})">Delete</button>
+                    <button type="button" class="btn btn-ghost btn-sm" data-action="edit" data-id="${h.id}" data-shares="${parseFloat(h.shares)}" data-avgcost="${parseFloat(h.avg_cost)}" data-ticker="${h.ticker}">Edit</button>
+                    <button type="button" class="btn btn-ghost btn-sm btn-danger" data-action="delete" data-id="${h.id}">Delete</button>
                 </td>
             </tr>
         `).join('');
